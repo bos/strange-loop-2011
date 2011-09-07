@@ -1,0 +1,5 @@
+^(?:dist|cabal-dev)$
+\.(?:aux|eventlog|h[ip]|log|[oa]|orig|prof|ps|rej|swp)$
+~$
+syntax: glob
+.\#*
