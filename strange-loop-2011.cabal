@@ -7,4 +7,6 @@ executable strange-loop
   hs-source-dirs: src
   main-is: Main.hs
 
-  build-depends: base
+  build-depends:
+    base,
+    http-enumerator
