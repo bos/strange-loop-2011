@@ -2,4 +2,4 @@ import System.Environment
 
 main = do
   args <- getArgs
-  print args
+  putStrLn ("So! Your args are " ++ show args)
