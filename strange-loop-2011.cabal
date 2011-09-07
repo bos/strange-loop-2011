@@ -4,6 +4,7 @@ cabal-version: >= 1.2
 build-type: Simple
 
 executable strange-loop
+  hs-source-dirs: src
   main-is: Main.hs
 
   build-depends: base
