@@ -9,4 +9,6 @@ executable strange-loop
 
   build-depends:
     base,
-    http-enumerator
+    bytestring,
+    http-enumerator,
+    text
