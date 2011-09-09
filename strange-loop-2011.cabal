@@ -11,4 +11,5 @@ executable strange-loop
     base,
     bytestring,
     http-enumerator,
+    tagsoup,
     text
