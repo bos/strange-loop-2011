@@ -12,4 +12,4 @@ executable strange-loop
     bytestring,
     http-enumerator,
     tagsoup,
-    text
+    utf8-string
