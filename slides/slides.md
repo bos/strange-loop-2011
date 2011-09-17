@@ -40,7 +40,16 @@ main = putStrLn "hello!"
 * The community of people is amazing
 
 
-# What to expect
+# What to expect 1
+
+* Haskell is a fairly big language
+
+* Since so much is unfamiliar to newcomers, expect to wander far from
+  your comfort zone
+
+* I'm going to teach you *interesting* things, but not *everything*
+
+# What to expect 2
 
 * This is a *hands-on* workshop: you'll be writing code!
 
@@ -150,10 +159,14 @@ Try it out:
 ~~~~
 
 ~~~~ {.haskell}
+123456781234567812345678 * 87654321876543
+~~~~
+
+~~~~ {.haskell}
 "foo" ++ "bar"
 ~~~~
 
-(That `++` is the string append operator.)
+(That `++` is the "append" operator.)
 
 
 # Directives
@@ -183,10 +196,16 @@ main
 
 Did that work for you?
 
+What about this?
+
+~~~~ {.haskell}
+putStrLn "hi mom!"
+~~~~
+
 
 # A few more useful directives
 
-Remember, they all start with a "`:`".
+Remember, all `ghci` directives start with a "`:`".
 
 * `:help` tells us what directives are available.
 
@@ -223,6 +242,537 @@ Test out your redefinition of `main`.
 
 * For practice, hit the "up arrow" key to cycle through your command
   history until you get back to the last time you typed `main`.
+
+
+# Lists and strings
+
+~~~~ {.haskell}
+[1,2,3,4]
+~~~~
+
+~~~~ {.haskell}
+['h','e','l','l','o']
+~~~~
+
+Double quotes are just syntactic sugar for the longer form:
+
+~~~~ {.haskell}
+"hello"
+~~~~
+
+What does this print?
+
+~~~~ {.haskell}
+"foo" == ['f','o','o']
+~~~~
+
+
+# Calling functions: 1
+
+We use white space to separate a function from its argument:
+
+~~~~ {.haskell}
+head "foo"
+~~~~
+
+~~~~ {.haskell}
+head [1,2,3]
+~~~~
+
+~~~~ {.haskell}
+tail [1,2,3]
+~~~~
+
+
+# Calling functions: 2
+
+If a function takes multiple arguments, we separate them with white
+space:
+
+~~~~ {.haskell}
+min 3 4
+~~~~
+
+If an argument is a compound expression, wrap it in parentheses:
+
+~~~~ {.haskell}
+compare (3+5) (2+7)
+~~~~
+
+~~~~ {.haskell}
+max (min 3 4) 5
+~~~~
+
+
+# Quick exercises: 1
+
+Use `ghci` as a calculator.
+
+The `**` operator performs exponentiation.
+
+* If I invest 5 quatloos at 3% compound interest per annum, how many
+  quatloos will I have after 10 years?
+
+
+# Quick exercises: 2
+
+The notation `['a'..'z']` generates a list from start to end,
+inclusive.
+
+The `sum` function adds the elements of a list.
+
+* What is the sum of the numbers between 9 and 250, inclusive, *minus* 2?
+
+
+# Quick exercises: 3
+
+The `show` function renders a value as a string.  Try it!
+
+~~~~ {.haskell}
+show (1 == 2)
+~~~~
+
+The `length` function tells us how many elements are in a list.
+
+~~~~ {.haskell}
+length [1,2,3]
+~~~~
+
+* How many digits are in the product of all numbers between 0xBE and
+  0xEF, inclusive?
+
+
+# Defining a function
+
+It is pretty simple to define a new function.
+
+Open up your text editor, create a new file with a `.hs` extension,
+and get writing!
+
+~~~~ {.haskell}
+isOdd x  =  (rem x 2) == 1
+~~~~
+
+* We start with the name of the function.
+
+* Next come the names we want to give its parameter(s), separated by
+  white space.
+
+* After those come a single `=` character, with the *body* of the
+  function following.
+
+Load your source file into `ghci` and give `myOdd` a try.
+
+
+# Making life more interesting
+
+Now we can define very simple functions, but we're missing some
+important building blocks for more fun.
+
+So let's get to it!
+
+
+# Conditional execution
+
+Q: What does the familiar `if` look like in Haskell?
+
+A: Familiar!
+
+~~~~ {.haskell}
+gcd a b = if b == 0
+          then a
+	  else gcd b (rem a b)
+~~~~
+
+We have the following elements:
+
+* A Boolean expression
+
+* `then` an expression that will be the result if the Boolean is
+  `True`
+  
+* `else` an expression that will be the result if the Boolean is
+  `False`
+
+
+# Finally! A tiny bit about types
+
+The two possible results of an `if` expression must have the same
+type.
+
+If `then` evaluates to a `String`, well `else` must too!
+
+For instance, this makes no sense:
+
+~~~~ {.haskell}
+if True
+then 3.14
+else "wombat"
+~~~~
+
+We are forbidden from writing ill-typed expressions like this.
+
+
+# What about else?
+
+In imperative languages, we can usually leave out the `else` clause
+after an `if`.
+
+Not so in Haskell.
+
+Why does this make sense for imperative languages, but not Haskell?
+
+
+# A nearly trivial exercise
+
+Write a function that appends `", world"` to its argument if the
+argument is `"hello"`, or just returns its argument unmodified
+otherwise.
+
+* Remember, the "append" function is an operator named `++`.
+
+
+# Lists in Haskell
+
+We already know what a list looks like in Haskell:
+
+~~~~ {.haskell}
+[1,2,3]
+~~~~
+
+And of course there's the syntactic sugar for strings:
+
+~~~~ {.haskell}
+"foo" == ['f','o','o']
+~~~~
+
+But is this everything there is to know?
+
+
+# List constructors
+
+Supposing we want to construct a list from first principles.
+
+* We write the *empty list* as `[]`.
+
+* Given an existing list, we can add another element to the *front* of
+  the list using the `:` operator.
+
+
+# Type this into ghci
+
+Add an element to an empty list:
+
+~~~~ {.haskell}
+1 : []
+~~~~
+
+
+# From single-element lists onwards
+
+What about extending that list?
+
+~~~~ {.haskell}
+2 : (1 : [])
+~~~~
+
+You're probably guessing now that `[2,1]` is syntactic sugar for
+`2:(1:[])`. And you're right!
+
+What is the result of this expression?
+
+~~~~ {.haskell}
+5 : 8 : [] == [5,8]
+~~~~
+
+
+# Constructors
+
+We refer to `[]` and `:` as *constructors*, because we use them to
+construct lists.
+
+When you create a list, the Haskell runtime has to remember which
+constructors you used, and where.
+
+So the value `[5,8]` is represented as:
+
+* A `:` constructor, with `5` as its first parameter, and as its
+  second ...
+
+* Another `:` constructor, this time with `8` as its first parameter,
+  and now as its second ...
+  
+* A `[]` constructor
+
+
+# What did we see?
+
+Depending on your background, I bet you're thinking something like
+this:
+
+* "Hey! Haskell lists look like singly linked lists!"
+
+* "Hey! That looks just like lists built out of `cons` cells in Lisp!"
+
+Right on.
+
+
+# Why do we care about constructors?
+
+So of course Haskell has to remember what a list is constructed of,
+but it also lets *us* inspect a list, to see which constructors were
+used.  How do we do this?
+
+~~~~ {.haskell}
+import Data.Char
+
+isCapitalized name
+  = case name of
+      (first:rest) -> isUpper first
+      []           -> False
+~~~~
+
+
+# Welcome to the case expression
+
+A `case` expression allows us to *inspect* a structure to see how it
+was constructed.
+
+~~~~ {.haskell}
+isCapitalized name
+  = case name of
+      []           -> False
+      (first:rest) -> isUpper first
+~~~~
+
+* In between `case` and `of` is the expression we are inspecting.
+
+* If the constructor used was the empty-list constructor `[]`, then
+  clearly the `name` is not capitalized.
+
+If the constructor used was the "add to the front" `:` operator,
+then things get more interesting.
+  
+* Whatever was the first parameter of the `:` constructor is bound
+  to the name `first`.
+    
+* The second parameter of the `:` constructor (i.e. everything in the
+  list after the first element) is bound to the name `rest`.
+
+* The expression following the `->` is evaluated with these values.
+
+
+# Pattern matching
+
+The `case` expression performs what we call *pattern matching*.
+
+* Patterns are checked from top to bottom.
+
+* As soon as a match is found, its right hand side (after the `->`) is
+  used as the result of the entire `case` expression.
+  
+* If no match succeeds, an exception is thrown.
+
+
+# A worked example
+
+Let's step through the machinery of what happens if we evaluate this
+expression.
+
+~~~~ {.haskell}
+isCapitalized "Ann"
+~~~~
+
+
+# Whew! A few exercises!
+
+Finally! We can write slightly more complex functions.
+
+Now that you can inspect the front of a list, you should be able to
+process an *entire* list recursively.
+
+First, please write a function named `myLength` that computes the
+number of elements in a list.
+
+Next, write a function named `countCaps` that calculates the number of
+capital letters in a string.
+
+~~~~ {.haskell}
+countCaps "Monkey Butter" == 2
+~~~~
+
+
+# Counting capital letters
+
+Wow, that countCaps function was a pain, right?
+
+Here's my definition that uses only the machinery we've learned so
+far:
+
+~~~~ {.haskell}
+countCaps string =
+  case string of
+    []     -> 0
+    (x:xs) -> if isUpper x
+              then 1 + countCaps xs
+              else countCaps xs
+~~~~
+
+
+# Huh.
+
+I thought Haskell was all about concision!?
+
+
+# Conciseness 1: top-level pattern matching
+
+~~~~ {.haskell}
+countCaps []     = 0
+countCaps (x:xs) =
+    if isUpper x
+    then 1 + countCaps xs
+    else countCaps xs
+~~~~
+
+We can define a function as a series of equations, each containing a
+pattern match.
+
+This is nice syntactic sugar for `case`.
+
+
+# Conciseness 2: guards
+
+~~~~ {.haskell}
+countCaps []     = 0
+countCaps (x:xs)
+   | isUpper x    = 1 + countCaps xs
+   | otherwise    = countCaps xs
+~~~~
+
+After each `|` is a *guard*.
+
+* If a pattern matches, we evaluate each Boolean guard expression from
+  top to bottom.
+
+* When one succeeds, we evaluate the RHS as the body of the function.
+
+(Yes, patterns in a `case` can have guards too.)
+
+
+# Before
+
+Like the original version, but with use of `case` stripped out:
+
+~~~~ {.haskell}
+countCaps xs =
+  if null xs
+  then 0 
+  else if isUpper (head xs)
+       then 1 + countCaps (tail xs)
+       else countCaps (tail xs)
+~~~~
+
+# After
+
+Both shorter and easier to follow:
+
+~~~~ {.haskell}
+countCaps []     = 0
+countCaps (x:xs)
+   | isUpper x    = 1 + countCaps xs
+   | otherwise    = countCaps xs
+~~~~
+
+
+# Another approach
+
+Write a new version of `countCaps` as follows:
+
+* Write a function that goes through a list, and which generates a new
+  list that contains only its capital letters.
+
+* Use `length` to count the number of elements.
+
+This should give the same result as your first function. Right?
+
+
+# A change of specification
+
+Suppose we want to count the number of lowercase letters in a string.
+
+This seems almost the same as our function for counting uppercase
+letters.
+
+What can we do with this observation?
+
+
+# Higher order functions
+
+*Higher order function*: a function that accepts another function as a
+parameter.
+
+~~~~ {.haskell}
+filter pred [] = []
+filter pred (x:xs)
+  | pred x     = x : filter pred xs
+  | otherwise  =     filter pred xs
+~~~~
+
+How can we use this to define `countLowerCase`?
+
+
+# Data in, data out
+
+By now, we've seen several definitions like this:
+
+~~~~ {.haskell}
+countLowerCase string =
+  length (filter isLower string)
+~~~~
+
+This is a recurring pattern:
+
+* A function of one argument
+
+* It's being fed the result of ...
+
+* ... another function of one argument
+
+
+# Function composition
+
+Haskell doesn't limit us to giving functions alphanumeric names.
+
+Here, we define a function named simply "`.`", which we can use as an
+operator:
+
+~~~~ {.haskell}
+(f . g) x = f (g x)
+~~~~
+
+How to use this?
+
+~~~~ {.haskell}
+countLowerCase = length . filter isLower
+~~~~
+
+# Understanding composition
+
+If that seemed hard to follow, let's make it clearer.
+
+We'll plug the arguments into the RHS of our function definition:
+
+~~~~ {.haskell}
+(f . g) x = f (g x)
+~~~~
+
+We had `length` as the first argument to "`.`", and `filter isLower`
+as the second:
+
+~~~~ {.haskell}
+(length . filter isLower) x 
+  = length (filter isLower x)
+~~~~
 
 
 # Problem definition
