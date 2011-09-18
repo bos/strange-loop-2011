@@ -1947,12 +1947,173 @@ Here's the state we need to maintain:
 * A collection of pages and their outbound links
 
 
+# Tracking what we've seen
+
+For any given page, we need to remember both it and all the pages it
+links to.
+
+One possibility for associating the two is a *tuple*:
+
+~~~~ {.haskell}
+("http://x.org/", ["http://microsoft.com/"])
+~~~~
+
+Tuples are useful any time we want mixed-type data without the hassle
+of creating a new type.
+
+Speaking of a new type, here's how we'd define one:
+
+~~~~ {.haskell}
+data Link = Link String [String]
+
+-- Let's define some accessors, too.
+linkFrom (Link url _) = url
+linkTo (Link _ links) = links
+~~~~
+
+
+# Avoiding duplication
+
+We don't want to visit any URL twice.
+
+How do we avoid this?
+
+~~~~ {.haskell}
+visited url = elem url . map linkTo
+~~~~
+
+This function has a problem - what is that problem?
+
+
+# Better performance
+
+We really want a structure with a fast lookup operation.
+
+What would you use in your language?
+
+
+# Maps and importing
+
+In Haskell, we have mutable hash tables, but we don't use them.
+
+Instead, we use *immutable* key-value maps.
+
+We must perform fancy module importing tricks because the `Data.Map`
+module defines a lot of names that would otherwise overlap with
+built-in names.
+
+This means "only import the name `Map` from `Data.Map`":
+
+~~~~ {.haskell}
+import Data.Map (Map)
+~~~~
+
+And this means "import everything from `Data.Map`, but all those names
+must be prefixed with `Map.`":
+
+~~~~ {.haskell}
+import Data.Map (Map)
+~~~~
+
+
+# What use is an immutable data structure?
+
+Everyone knows how to add a key and value to a hash table, right?
+
+And that seems like a fundamental operation.
+
+What do we do with maps?
+
+* Create a *new* map that is identical to the one we supply, with the
+  requested element added.
+
+How can this possibly work? Is it efficient?
+
+
+# A fistful of dollars
+
+Here's a surprisingly handy built-in operator:
+
+~~~~ {.haskell}
+f $ x = f x
+~~~~
+
+Why is this useful? Because it lets us eliminate parentheses.
+
+Before:
+
+~~~~ {.haskell}
+explode k = error ("failed on " ++ show k)
+~~~~
+
+After:
+
+~~~~ {.haskell}
+explode k = error $ "failed on " ++ show k
+~~~~
+
+
+# Partial application
+
+This is annoying to write:
+
+~~~~ {.haskell}
+increment k = 1 + k
+~~~~
+
+Almost as bad:
+
+~~~~ {.haskell}
+\k -> 1 + k
+~~~~
+
+Much handier, and identical:
+
+~~~~ {.haskell}
+(1+)
+~~~~
+
+In fact, this is valid:
+
+~~~~ {.haskell}
+increment = (1+)
+~~~~
+
+# Spidering, in all its glory
+
+~~~~ {.haskell}
+spider :: Int -> URL -> IO (Map URL [URL])
+spider count url0 = go 0 Map.empty (Set.singleton url0)
+  where
+    go k seen queue0
+        | k >= count = return seen
+        | otherwise  =
+      case Set.minView queue0 of
+        Nothing -> return seen
+        Just (url, queue) -> do
+          page <- download url
+          let ls       = links url page
+              newSeen  = Map.insert url ls seen
+              notSeen  = Set.fromList .
+                         filter (`Map.notMember` newSeen) $ ls
+              newQueue = queue `Set.union` notSeen
+          go (k+1) newSeen newQueue
+~~~~
+
+
 # Where do we stand?
 
-We can now download and extract the links from a page.
+We can now:
 
-What's next?
+* Download a web page
 
-* Compute which ones are important
+* Extract its links
 
+* Spider out from there, without repeat visits
+
+What remains?
+
+* We could spider multiple pages concurrently
+
+* Or we could compute which pages are "important"
 

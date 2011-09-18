@@ -16,8 +16,9 @@ spider count url0 = go 0 Map.empty (Set.singleton url0)
         Nothing -> return seen
         Just (url, queue) -> do
           page <- download url
-          let ls = links url page
-              newSeen = Map.insert url ls seen
-              newQueue = queue `Set.union`
-                         Set.fromList (filter (`Map.notMember` newSeen) ls)
+          let ls       = links url page
+              newSeen  = Map.insert url ls seen
+              notSeen  = Set.fromList .
+                         filter (`Map.notMember` newSeen) $ ls
+              newQueue = queue `Set.union` notSeen
           go (k+1) newSeen newQueue
