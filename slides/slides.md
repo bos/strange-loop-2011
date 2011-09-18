@@ -25,6 +25,13 @@ main = putStrLn "hello!"
     * [github.com/mailrank](https://github.com/mailrank)
 
 
+# Copy these slides (if you want)
+
+~~~~
+git clone https://github.com/bos/strange-loop-2011
+~~~~
+
+
 # My Haskell background
 
 * Began using Haskell at university
@@ -2117,3 +2124,10 @@ What remains?
 
 * Or we could compute which pages are "important"
 
+
+# Fin
+
+At this point, if we have miraculously not run out of time, we're
+going on a choose-your-own-adventure session in Emacs.
+
+Thanks for sticking with the slideshow so far!

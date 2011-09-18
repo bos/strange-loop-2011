@@ -1,0 +1,1481 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Bryan O'Sullivan" />
+  <meta name="date" content="2011-09-18" />
+  <title>Haskell: Functional Programming, Solid Code, Big Data</title>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode, table.sourceCode pre 
+   { margin: 0; padding: 0; border: 0; vertical-align: baseline; border: none; }
+td.lineNumbers { border-right: 1px solid #AAAAAA; text-align: right; color: #AAAAAA; padding-right: 5px; padding-left: 5px; }
+td.sourceCode { padding-left: 5px; }
+code.sourceCode span.kw { color: #007020; font-weight: bold; } 
+code.sourceCode span.dt { color: #902000; }
+code.sourceCode span.dv { color: #40a070; }
+code.sourceCode span.bn { color: #40a070; }
+code.sourceCode span.fl { color: #40a070; }
+code.sourceCode span.ch { color: #4070a0; }
+code.sourceCode span.st { color: #4070a0; }
+code.sourceCode span.co { color: #60a0b0; font-style: italic; }
+code.sourceCode span.ot { color: #007020; }
+code.sourceCode span.al { color: red; font-weight: bold; }
+code.sourceCode span.fu { color: #06287e; }
+code.sourceCode span.re { }
+code.sourceCode span.er { color: red; font-weight: bold; }
+  </style>
+  <style type="text/css">
+body{margin:0;padding:0;width:100%;height:100%;color:black;background-color:white;font-family:"Gill Sans MT","Gill Sans",GillSans,sans-serif;font-size:14pt;}.hidden{display:none;visibility:hidden;}div.toolbar{position:fixed;z-index:200;top:auto;bottom:0;left:0;right:0;height:1.2em;text-align:right;padding-left:1em;padding-right:1em;font-size:60%;color:red;background:#f0f0f0;}div.background{display:none;}div.handout{margin-left:20px;margin-right:20px;}div.slide.titlepage{text-align:center;}div.slide.titlepage.h1{padding-top:40%;}div.slide{z-index:20;margin:0;padding-top:0;padding-bottom:0;padding-left:20px;padding-right:20px;border-width:0;clear:both;top:0;bottom:0;left:0;right:0;line-height:120%;background-color:transparent;}div.slide+div[class].slide{page-break-before:always;}div.slide h1{padding-left:0;padding-right:20pt;padding-top:4pt;padding-bottom:4pt;margin-top:0;margin-left:0;margin-right:60pt;margin-bottom:.5em;display:block;font-size:160%;line-height:1.2em;background:transparent;}div.toc{position:absolute;top:auto;bottom:4em;left:4em;right:auto;width:60%;max-width:30em;height:30em;border:solid thin black;padding:1em;background:#f0f0f0;color:black;z-index:300;overflow:auto;display:block;visibility:visible;}div.toc-heading{width:100%;border-bottom:solid 1px #b4b4b4;margin-bottom:1em;text-align:center;}pre{font-size:80%;font-weight:bold;line-height:120%;padding-top:.2em;padding-bottom:.2em;padding-left:1em;padding-right:1em;border-style:solid;border-left-width:1em;border-top-width:thin;border-right-width:thin;border-bottom-width:thin;border-color:#95ABD0;color:#00428C;background-color:#E4E5E7;}li pre{margin-left:0;}@media print{div.slide{display:block;visibility:visible;position:relative;border-top-style:solid;border-top-width:thin;border-top-color:black;}div.slide pre{font-size:60%;padding-left:.5em;}div.handout{display:block;visibility:visible;}}blockquote{font-style:italic;}img{background-color:transparent;}p.copyright{font-size:smaller;}.center{text-align:center;}.footnote{font-size:smaller;margin-left:2em;}a img{border-width:0;border-style:none;}a:visited{color:navy;}a:link{color:navy;}a:hover{color:red;text-decoration:underline;}a:active{color:red;text-decoration:underline;}a{text-decoration:none;}.navbar a:link{color:white;}.navbar a:visited{color:yellow;}.navbar a:active{color:red;}.navbar a:hover{color:red;}ul{list-style-type:square;}ul ul{list-style-type:disc;}ul ul ul{list-style-type:circle;}ul ul ul ul{list-style-type:disc;}li{margin-left:.5em;margin-top:.5em;}li li{font-size:85%;font-style:italic;}li li li{font-size:85%;font-style:normal;}div dt{margin-left:0;margin-top:1em;margin-bottom:.5em;font-weight:bold;}div dd{margin-left:2em;margin-bottom:.5em;}p,pre,ul,ol,blockquote,h2,h3,h4,h5,h6,dl,table{margin-left:1em;margin-right:1em;}p.subhead{font-weight:bold;margin-top:2em;}.smaller{font-size:smaller;}.bigger{font-size:130%;}td,th{padding:.2em;}ul{margin:.5em 1.5em .5em 1.5em;padding:0;}ol{margin:.5em 1.5em .5em 1.5em;padding:0;}ul{list-style-type:square;}ul ul{list-style-type:disc;}ul ul ul{list-style-type:circle;}ul ul ul ul{list-style-type:disc;}ul li{list-style:square;margin:.1em 0 .6em 0;padding:0;line-height:140%;}ol li{margin:.1em 0 .6em 1.5em;padding:0;line-height:140%;list-style-type:decimal;}li ul li{font-size:85%;font-style:italic;list-style-type:disc;background:transparent;padding:0;}li li ul li{font-size:85%;font-style:normal;list-style-type:circle;background:transparent;padding:0;}li li li ul li{list-style-type:disc;background:transparent;padding:0;}li ol li{list-style-type:decimal;}li li ol li{list-style-type:decimal;}ol.outline li:hover{cursor:pointer;}ol.outline li.nofold:hover{cursor:default;}ul.outline li:hover{cursor:pointer;}ul.outline li.nofold:hover{cursor:default;}ol.outline{list-style:decimal;}ol.outline ol{list-style-type:lower-alpha;}ol.outline li.nofold{padding:0 0 0 20px;background:transparent url(nofold-dim.gif) no-repeat 0 .5em;}ol.outline li.unfolded{padding:0 0 0 20px;background:transparent url(fold-dim.gif) no-repeat 0 .5em;}ol.outline li.folded{padding:0 0 0 20px;background:transparent url(unfold-dim.gif) no-repeat 0 .5em;}ol.outline li.unfolded:hover{padding:0 0 0 20px;background:transparent url(fold.gif) no-repeat 0 .5em;}ol.outline li.folded:hover{padding:0 0 0 20px;background:transparent url(unfold.gif) no-repeat 0 .5em;}ul.outline li.nofold{padding:0 0 0 20px;background:transparent url(nofold-dim.gif) no-repeat 0 .5em;}ul.outline li.unfolded{padding:0 0 0 20px;background:transparent url(fold-dim.gif) no-repeat 0 .5em;}ul.outline li.folded{padding:0 0 0 20px;background:transparent url(unfold-dim.gif) no-repeat 0 .5em;}ul.outline li.unfolded:hover{padding:0 0 0 20px;background:transparent url(fold.gif) no-repeat 0 .5em;}ul.outline li.folded:hover{padding:0 0 0 20px;background:transparent url(unfold.gif) no-repeat 0 .5em;}a.titleslide{font-weight:bold;font-style:italic;}
+  </style>
+  <script type="text/javascript" charset="utf-8">
+var ns_pos=(typeof window.pageYOffset!="undefined");var khtml=((navigator.userAgent).indexOf("KHTML")>=0?true:false);var opera=((navigator.userAgent).indexOf("Opera")>=0?true:false);var ie=(typeof document.all!="undefined"&&!opera);var ie7=(!ns_pos&&navigator.userAgent.indexOf("MSIE 7")!=-1);var ie8=(!ns_pos&&navigator.userAgent.indexOf("MSIE 8")!=-1);var slidy_started=false;if(ie&&!ie8){document.write("<iframe id='historyFrame' src='javascript:\"<html></html>\"' height='1' width='1' style='position:absolute;left:-800px'></iframe>")}if(typeof beforePrint!="undefined"){window.onbeforeprint=beforePrint;window.onafterprint=afterPrint}if(ie){setTimeout(ieSlidyInit,100)}else{if(document.addEventListener){document.addEventListener("DOMContentLoaded",startup,false)}}function ieSlidyInit(){if(document.readyState=="complete"||document.readyState=="loaded"){startup()}else{setTimeout(ieSlidyInit,100)}}setTimeout(hideSlides,50);function hideSlides(){if(document.body){document.body.style.visibility="hidden"}else{setTimeout(hideSlides,50)}}var slidenum=0;var slides;var slideNumElement;var notes;var backgrounds;var toolbar;var title;var lastShown=null;var eos=null;var toc=null;var outline=null;var selectedTextLen;var viewAll=0;var wantToolbar=1;var mouseClickEnabled=true;var scrollhack=0;var key_wanted=false;var helpAnchor;var helpPage="http://www.w3.org/Talks/Tools/Slidy/help.html";var helpText="Navigate with mouse click, space bar, Cursor Left/Right, or Pg Up and Pg Dn. Use S and B to change font size.";var sizeIndex=0;var sizeAdjustment=0;var sizes=new Array("10pt","12pt","14pt","16pt","18pt","20pt","22pt","24pt","26pt","28pt","30pt","32pt");var okayForIncremental=incrementalElementList();var lastWidth=0;var lastHeight=0;var objects;var lang="en";var strings_es={slide:"pág.","help?":"Ayuda","contents?":"Índice","table of contents":"tabla de contenidos","Table of Contents":"Tabla de Contenidos","restart presentation":"Reiniciar presentación","restart?":"Inicio"};strings_es[helpText]="Utilice el ratón, barra espaciadora, teclas Izda/Dcha, o Re pág y Av pág. Use S y B para cambiar el tamaño de fuente.";var strings_ca={slide:"pàg..","help?":"Ajuda","contents?":"Índex","table of contents":"taula de continguts","Table of Contents":"Taula de Continguts","restart presentation":"Reiniciar presentació","restart?":"Inici"};strings_ca[helpText]="Utilitzi el ratolí, barra espaiadora, tecles Esq./Dta. o Re pàg y Av pàg. Usi S i B per canviar grandària de font.";var strings_nl={slide:"pagina","help?":"Help?","contents?":"Inhoud?","table of contents":"inhoudsopgave","Table of Contents":"Inhoudsopgave","restart presentation":"herstart presentatie","restart?":"Herstart?"};strings_nl[helpText]="Navigeer d.m.v. het muis, spatiebar, Links/Rechts toetsen, of PgUp en PgDn. Gebruik S en B om de karaktergrootte te veranderen.";var strings_de={slide:"Seite","help?":"Hilfe","contents?":"Übersicht","table of contents":"Inhaltsverzeichnis","Table of Contents":"Inhaltsverzeichnis","restart presentation":"Präsentation neu starten","restart?":"Neustart"};strings_de[helpText]="Benutzen Sie die Maus, Leerschlag, die Cursortasten links/rechts oder Page up/Page Down zum Wechseln der Seiten und S und B für die Schriftgrösse.";var strings_pl={slide:"slajd","help?":"pomoc?","contents?":"spis treści?","table of contents":"spis treści","Table of Contents":"Spis Treści","restart presentation":"Restartuj prezentację","restart?":"restart?"};strings_pl[helpText]="Zmieniaj slajdy klikając myszą, naciskając spację, strzałki lewo/prawolub PgUp / PgDn. Użyj klawiszy S i B, aby zmienić rozmiar czczionki.";var strings_fr={slide:"page","help?":"Aide","contents?":"Index","table of contents":"table des matières","Table of Contents":"Table des matières","restart presentation":"Recommencer l'exposé","restart?":"Début"};strings_fr[helpText]="Naviguez avec la souris, la barre d'espace, les flèches gauche/droite ou les touches Pg Up, Pg Dn. Utilisez les touches S et B pour modifier la taille de la police.";var strings_hu={slide:"oldal","help?":"segítség","contents?":"tartalom","table of contents":"tartalomjegyzék","Table of Contents":"Tartalomjegyzék","restart presentation":"bemutató újraindítása","restart?":"újraindítás"};strings_hu[helpText]="Az oldalak közti lépkedéshez kattintson az egérrel, vagy használja a szóköz, a bal, vagy a jobb nyíl, illetve a Page Down, Page Up billentyűket. Az S és a B billentyűkkel változtathatja a szöveg méretét.";var strings_it={slide:"pag.","help?":"Aiuto","contents?":"Indice","table of contents":"indice","Table of Contents":"Indice","restart presentation":"Ricominciare la presentazione","restart?":"Inizio"};strings_it[helpText]="Navigare con mouse, barra spazio, frecce sinistra/destra o PgUp e PgDn. Usare S e B per cambiare la dimensione dei caratteri.";var strings_el={slide:"σελίδα","help?":"βοήθεια;","contents?":"περιεχόμενα;","table of contents":"πίνακας περιεχομένων","Table of Contents":"Πίνακας Περιεχομένων","restart presentation":"επανεκκίνηση παρουσίασης","restart?":"επανεκκίνηση;"};strings_el[helpText]="Πλοηγηθείτε με το κλίκ του ποντικιού, το space, τα βέλη αριστερά/δεξιά, ή Page Up και Page Down. Χρησιμοποιήστε τα πλήκτρα S και B για να αλλάξετε το μέγεθος της γραμματοσειράς.";var strings_ja={slide:"スライド","help?":"ヘルプ","contents?":"目次","table of contents":"目次を表示","Table of Contents":"目次","restart presentation":"最初から再生","restart?":"最初から"};strings_ja[helpText]="マウス左クリック ・ スペース ・ 左右キー または Page Up ・ Page Downで操作， S ・ Bでフォントサイズ変更";var strings_zh={slide:"幻灯片","help?":"帮助?","contents?":"内容?","table of contents":"目录","Table of Contents":"目录","restart presentation":"重新启动展示","restart?":"重新启动?"};strings_zh[helpText]="用鼠标点击, 空格条, 左右箭头, Pg Up 和 Pg Dn 导航. 用 S, B 改变字体大小.";var strings_ru={slide:"слайд","help?":"помощь?","contents?":"содержание?","table of contents":"оглавление","Table of Contents":"Оглавление","restart presentation":"перезапустить презентацию","restart?":"перезапуск?"};strings_ru[helpText]="Перемещайтесь кликая мышкой, используя клавишу пробел, стрелкивлево/вправо или Pg Up и Pg Dn. Клавиши S и B меняют размер шрифта.";var strings_sv={slide:"sida","help?":"hjälp","contents?":"innehåll","table of contents":"innehållsförteckning","Table of Contents":"Innehållsförteckning","restart presentation":"visa presentationen från början","restart?":"börja om"};strings_sv[helpText]="Bläddra med ett klick med vänstra musknappen, mellanslagstangenten, vänster- och högerpiltangenterna eller tangenterna Pg Up, Pg Dn. Använd tangenterna S och B för att ändra textens storlek.";var localize={es:strings_es,ca:strings_ca,nl:strings_nl,de:strings_de,pl:strings_pl,fr:strings_fr,hu:strings_hu,it:strings_it,el:strings_el,jp:strings_ja,zh:strings_zh,ru:strings_ru,sv:strings_sv};function startup(){if(slidy_started){alert("already started");return}slidy_started=true;lang=document.body.parentNode.getAttribute("lang");if(!lang){lang=document.body.parentNode.getAttribute("xml:lang")}if(!lang){lang="en"}document.body.style.visibility="visible";title=document.title;toolbar=addToolbar();wrapImplicitSlides();slides=collectSlides();notes=collectNotes();objects=document.body.getElementsByTagName("object");backgrounds=collectBackgrounds();patchAnchors();slidenum=findSlideNumber(location.href);window.offscreenbuffering=true;sizeAdjustment=findSizeAdjust();hideImageToolbar();initOutliner();if(slides.length>0){var slide=slides[slidenum];slide.style.position="absolute";if(slidenum>0){setVisibilityAllIncremental("visible");lastShown=previousIncrementalItem(null);setEosStatus(true)}else{lastShown=null;setVisibilityAllIncremental("hidden");setEosStatus(!nextIncrementalItem(lastShown))}setLocation()}toc=tableOfContents();hideTableOfContents();document.onclick=mouseButtonClick;document.onmouseup=mouseButtonUp;document.onkeydown=keyDown;if(opera){document.onkeypress=keyPress}window.onresize=resized;window.onscroll=scrolled;window.onunload=unloaded;singleSlideView();setLocation();resized();if(ie7){setTimeout("ieHack()",100)}showToolbar();setInterval("checkLocation()",200)}String.prototype.localize=function(){if(this==""){return this}var s,lookup=localize[lang];if(lookup){s=lookup[this];if(s){return s}}var lg=lang.split("-");if(lg.length>1){lookup=localize[lg[0]];if(lookup){s=lookup[this];if(s){return s}}}return this};function hideImageToolbar(){if(!ns_pos){var images=document.getElementsByTagName("IMG");for(var i=0;i<images.length;++i){images[i].setAttribute("galleryimg","no")}}}function ieHack(){window.resizeBy(0,-1);window.resizeBy(0,1)}function unloaded(e){}function reload(e){if(!e){var e=window.event}hideBackgrounds();setTimeout("document.reload();",100);stopPropagation(e);e.cancel=true;e.returnValue=false;return false}function isKHTML(){var agent=navigator.userAgent;return(agent.indexOf("KHTML")>=0?true:false)}function resized(){var width=0;if(typeof(window.innerWidth)=="number"){width=window.innerWidth}else{if(document.documentElement&&document.documentElement.clientWidth){width=document.documentElement.clientWidth}else{if(document.body&&document.body.clientWidth){width=document.body.clientWidth}}}var height=0;if(typeof(window.innerHeight)=="number"){height=window.innerHeight}else{if(document.documentElement&&document.documentElement.clientHeight){height=document.documentElement.clientHeight}else{if(document.body&&document.body.clientHeight){height=document.body.clientHeight}}}if(height&&(width/height>1.05*1024/768)){width=height*1024/768}if(width!=lastWidth||height!=lastHeight){if(width>=1100){sizeIndex=5}else{if(width>=1000){sizeIndex=4}else{if(width>=800){sizeIndex=3}else{if(width>=600){sizeIndex=2}else{if(width){sizeIndex=0}}}}}if(0<=sizeIndex+sizeAdjustment&&sizeIndex+sizeAdjustment<sizes.length){sizeIndex=sizeIndex+sizeAdjustment}adjustObjectDimensions(width,height);document.body.style.fontSize=sizes[sizeIndex];lastWidth=width;lastHeight=height;var slide=slides[slidenum];hideSlide(slide);showSlide(slide);refreshToolbar(200)}}function scrolled(){if(toolbar&&!ns_pos&&!ie7){hackoffset=scrollXOffset();toolbar.style.display="none";if(scrollhack==0&&!viewAll){setTimeout(showToolbar,1000);scrollhack=1}}}function refreshToolbar(interval){if(!ns_pos&&!ie7){hideToolbar();setTimeout(showToolbar,interval)}}function showToolbar(){if(wantToolbar){if(!ns_pos){var xoffset=scrollXOffset();toolbar.style.left=xoffset;toolbar.style.right=xoffset;toolbar.style.bottom=0}toolbar.style.display="block";toolbar.style.visibility="visible"}scrollhack=0;try{if(!opera){helpAnchor.focus()}}catch(e){}}function hideToolbar(){toolbar.style.display="none";toolbar.style.visibility="hidden";window.focus()}function toggleToolbar(){if(!viewAll){if(toolbar.style.display=="none"){toolbar.style.display="block";toolbar.style.visibility="visible";wantToolbar=1}else{toolbar.style.display="none";toolbar.style.visibility="hidden";wantToolbar=0}}}function scrollXOffset(){if(window.pageXOffset){return self.pageXOffset}if(document.documentElement&&document.documentElement.scrollLeft){return document.documentElement.scrollLeft}if(document.body){return document.body.scrollLeft}return 0}function scrollYOffset(){if(window.pageYOffset){return self.pageYOffset}if(document.documentElement&&document.documentElement.scrollTop){return document.documentElement.scrollTop}if(document.body){return document.body.scrollTop}return 0}function optimizeFontSize(){var slide=slides[slidenum];var dh=slide.scrollHeight;var wh=getWindowHeight();var u=100*dh/wh;alert("window utilization = "+u+"% (doc "+dh+" win "+wh+")")}function getDocHeight(doc){if(!doc){doc=document}if(doc&&doc.body&&doc.body.offsetHeight){return doc.body.offsetHeight}if(doc&&doc.body&&doc.body.scrollHeight){return doc.body.scrollHeight}alert("couldn't determine document height")}function getWindowHeight(){if(typeof(window.innerHeight)=="number"){return window.innerHeight}if(document.documentElement&&document.documentElement.clientHeight){return document.documentElement.clientHeight}if(document.body&&document.body.clientHeight){return document.body.clientHeight}}function documentHeight(){var sh,oh;sh=document.body.scrollHeight;oh=document.body.offsetHeight;if(sh&&oh){return(sh>oh?sh:oh)}return 0}function smaller(){if(sizeIndex>0){--sizeIndex}toolbar.style.display="none";document.body.style.fontSize=sizes[sizeIndex];var slide=slides[slidenum];hideSlide(slide);showSlide(slide);setTimeout(showToolbar,300)}function bigger(){if(sizeIndex<sizes.length-1){++sizeIndex}toolbar.style.display="none";document.body.style.fontSize=sizes[sizeIndex];var slide=slides[slidenum];hideSlide(slide);showSlide(slide);setTimeout(showToolbar,300)}function adjustObjectDimensions(width,height){for(var i=0;i<objects.length;i++){var obj=objects[i];var mimeType=obj.getAttribute("type");if(mimeType=="image/svg+xml"||mimeType=="application/x-shockwave-flash"){if(!obj.initialWidth){obj.initialWidth=obj.getAttribute("width")}if(!obj.initialHeight){obj.initialHeight=obj.getAttribute("height")}if(obj.initialWidth&&obj.initialWidth.charAt(obj.initialWidth.length-1)=="%"){var w=parseInt(obj.initialWidth.slice(0,obj.initialWidth.length-1));var newW=width*(w/100);obj.setAttribute("width",newW)}if(obj.initialHeight&&obj.initialHeight.charAt(obj.initialHeight.length-1)=="%"){var h=parseInt(obj.initialHeight.slice(0,obj.initialHeight.length-1));var newH=height*(h/100);obj.setAttribute("height",newH)}}}}function cancel(event){if(event){event.cancel=true;event.returnValue=false;if(event.preventDefault){event.preventDefault()}}return false}function keyDown(event){var key;if(!event){var event=window.event}key_wanted=false;if(window.event){key=window.event.keyCode}else{if(event.which){key=event.which}else{return true}}if(!key){return true}if(event.ctrlKey||event.altKey||event.metaKey){return true}if(isShownToc()&&key!=9&&key!=16&&key!=38&&key!=40){hideTableOfContents();if(key==27||key==84||key==67){return cancel(event)}}key_wanted=true;if(key==34){if(viewAll){return true}nextSlide(false);return cancel(event)}else{if(key==33){if(viewAll){return true}previousSlide(false);return cancel(event)}else{if(key==32){nextSlide(true);return cancel(event)}else{if(key==37){previousSlide(!event.shiftKey);return cancel(event)}else{if(key==36){firstSlide();return cancel(event)}else{if(key==35){lastSlide();return cancel(event)}else{if(key==39){nextSlide(!event.shiftKey);return cancel(event)}else{if(key==13){if(outline){if(outline.visible){fold(outline)}else{unfold(outline)}return cancel(event)}}else{if(key==188){smaller();return cancel(event)}else{if(key==190){bigger();return cancel(event)}else{if(key==189||key==109){smaller();return cancel(event)}else{if(key==187||key==191||key==107){bigger();return cancel(event)}else{if(key==83){smaller();return cancel(event)}else{if(key==66){bigger();return cancel(event)}else{if(key==90){lastSlide();return cancel(event)}else{if(key==70){toggleToolbar();return cancel(event)}else{if(key==65){toggleView();return cancel(event)}else{if(key==75){mouseClickEnabled=!mouseClickEnabled;alert((mouseClickEnabled?"enabled":"disabled")+" mouse click advance");return cancel(event)}else{if(key==84||key==67){if(toc){showTableOfContents()}return cancel(event)}else{if(key==72){window.location=helpPage;return cancel(event)}}}}}}}}}}}}}}}}}}}}key_wanted=false;return true}function keyPress(event){if(!event){event=window.event}return key_wanted?cancel(event):true}function mouseButtonUp(e){selectedTextLen=getSelectedText().length}function mouseButtonClick(e){var rightclick=false;var leftclick=false;var middleclick=false;var target;if(!e){var e=window.event}if(e.target){target=e.target}else{if(e.srcElement){target=e.srcElement}}if(target.nodeType==3){target=target.parentNode}if(e.which){leftclick=(e.which==1);middleclick=(e.which==2);rightclick=(e.which==3)}else{if(e.button){if(e.button==4){middleclick=true}rightclick=(e.button==2)}else{leftclick=true}}if(selectedTextLen>0){stopPropagation(e);e.cancel=true;e.returnValue=false;return false}hideTableOfContents();if(mouseClickEnabled&&leftclick&&target.nodeName!="EMBED"&&target.nodeName!="OBJECT"&&target.nodeName!="VIDEO"&&target.nodeName!="INPUT"&&target.nodeName!="TEXTAREA"&&target.nodeName!="SELECT"&&target.nodeName!="OPTION"){nextSlide(true);stopPropagation(e);e.cancel=true;e.returnValue=false}}function previousSlide(incremental){if(!viewAll){var slide;if((incremental||slidenum==0)&&lastShown!=null){lastShown=hidePreviousItem(lastShown);setEosStatus(false)}else{if(slidenum>0){slide=slides[slidenum];hideSlide(slide);slidenum=slidenum-1;slide=slides[slidenum];setVisibilityAllIncremental("visible");lastShown=previousIncrementalItem(null);setEosStatus(true);showSlide(slide)}}setLocation();if(!ns_pos){refreshToolbar(200)}}}function nextSlide(incremental){if(!viewAll){var slide,last=lastShown;if(incremental||slidenum==slides.length-1){lastShown=revealNextItem(lastShown)}if((!incremental||lastShown==null)&&slidenum<slides.length-1){slide=slides[slidenum];hideSlide(slide);slidenum=slidenum+1;slide=slides[slidenum];lastShown=null;setVisibilityAllIncremental("hidden");showSlide(slide)}else{if(!lastShown){if(last&&incremental){lastShown=last}}}setLocation();setEosStatus(!nextIncrementalItem(lastShown));if(!ns_pos){refreshToolbar(200)}}}function firstSlide(){if(!viewAll){var slide;if(slidenum!=0){slide=slides[slidenum];hideSlide(slide);slidenum=0;slide=slides[slidenum];lastShown=null;setVisibilityAllIncremental("hidden");showSlide(slide)}setEosStatus(!nextIncrementalItem(lastShown));setLocation()}}function lastSlide(){if(!viewAll){var slide;lastShown=null;if(lastShown==null&&slidenum<slides.length-1){slide=slides[slidenum];hideSlide(slide);slidenum=slides.length-1;slide=slides[slidenum];setVisibilityAllIncremental("visible");lastShown=previousIncrementalItem(null);showSlide(slide)}else{setVisibilityAllIncremental("visible");lastShown=previousIncrementalItem(null)}setEosStatus(true);setLocation()}}function gotoSlide(num){var slide=slides[slidenum];hideSlide(slide);slidenum=num;slide=slides[slidenum];lastShown=null;setVisibilityAllIncremental("hidden");setEosStatus(!nextIncrementalItem(lastShown));document.title=title+" ("+(slidenum+1)+")";showSlide(slide);showSlideNumber()}function setEosStatus(state){if(eos){eos.style.color=(state?"rgb(240,240,240)":"red")}}function showSlide(slide){syncBackground(slide);window.scrollTo(0,0);slide.style.visibility="visible";slide.style.display="block"}function hideSlide(slide){slide.style.visibility="hidden";slide.style.display="none"}function beforePrint(){showAllSlides();hideToolbar()}function afterPrint(){if(!viewAll){singleSlideView();showToolbar()}}function printSlides(){beforePrint();window.print();afterPrint()}function toggleView(){if(viewAll){singleSlideView();showToolbar();viewAll=0}else{showAllSlides();hideToolbar();viewAll=1}}function showAllSlides(){var slide;for(var i=0;i<slides.length;++i){slide=slides[i];slide.style.position="relative";slide.style.borderTopStyle="solid";slide.style.borderTopWidth="thin";slide.style.borderTopColor="black";try{if(i==0){slide.style.pageBreakBefore="avoid"}else{slide.style.pageBreakBefore="always"}}catch(e){}setVisibilityAllIncremental("visible");showSlide(slide)}var note;for(var i=0;i<notes.length;++i){showSlide(notes[i])}hideBackgrounds()}function singleSlideView(){var slide;for(var i=0;i<slides.length;++i){slide=slides[i];slide.style.position="absolute";if(i==slidenum){slide.style.borderStyle="none";showSlide(slide)}else{slide.style.borderStyle="none";hideSlide(slide)}}setVisibilityAllIncremental("visible");lastShown=previousIncrementalItem(null);var note;for(var i=0;i<notes.length;++i){hideSlide(notes[i])}}function hasToken(str,token){if(str){var pattern=/\w+/g;var result=str.match(pattern);for(var i=0;i<result.length;i++){if(result[i]==token){return true}}}return false}function getClassList(element){if(typeof element.className!="undefined"){return element.className}var clsname=(ns_pos||ie8)?"class":"className";return element.getAttribute(clsname)}function hasClass(element,name){var regexp=new RegExp("(^| )"+name+"W*");if(typeof element.className!="undefined"){return regexp.test(element.className)}var clsname=(ns_pos||ie8)?"class":"className";return regexp.test(element.getAttribute(clsname))}function removeClass(element,name){var regexp=new RegExp("(^| )"+name+"W*");var clsval="";if(typeof element.className!="undefined"){clsval=element.className;if(clsval){clsval=clsval.replace(regexp,"");element.className=clsval}}else{var clsname=(ns_pos||ie8)?"class":"className";clsval=element.getAttribute(clsname);if(clsval){clsval=clsval.replace(regexp,"");element.setAttribute(clsname,clsval)}}}function addClass(element,name){if(!hasClass(element,name)){if(typeof element.className!="undefined"){element.className+=" "+name}else{var clsname=(ns_pos||ie8)?"class":"className";var clsval=element.getAttribute(clsname);clsval=clsval?clsval+" "+name:name;element.setAttribute(clsname,clsval)}}}function wrapImplicitSlides(){var i,heading,node,next,div;var headings=document.getElementsByTagName("h1");if(!headings){return}for(i=0;i<headings.length;++i){heading=headings[i];if(heading.parentNode!=document.body){continue}node=heading.nextSibling;div=document.createElement("div");addClass(div,"slide");document.body.replaceChild(div,heading);div.appendChild(heading);while(node){if(node.nodeType==1&&(node.nodeName=="H1"||node.nodeName=="h1"||node.nodeName=="DIV"||node.nodeName=="div")){break}next=node.nextSibling;node=document.body.removeChild(node);div.appendChild(node);node=next}}}function collectSlides(){var slides=new Array();var divs=document.body.getElementsByTagName("div");for(var i=0;i<divs.length;++i){div=divs.item(i);if(hasClass(div,"slide")){slides[slides.length]=div;div.style.display="none";div.style.visibility="hidden";var node1=document.createElement("br");div.appendChild(node1);var node2=document.createElement("br");div.appendChild(node2)}else{if(hasClass(div,"background")){div.style.display="block"}}}return slides}function collectNotes(){var notes=new Array();var divs=document.body.getElementsByTagName("div");for(var i=0;i<divs.length;++i){div=divs.item(i);if(hasClass(div,"handout")){notes[notes.length]=div;div.style.display="none";div.style.visibility="hidden"}}return notes}function collectBackgrounds(){var backgrounds=new Array();var divs=document.body.getElementsByTagName("div");for(var i=0;i<divs.length;++i){div=divs.item(i);if(hasClass(div,"background")){backgrounds[backgrounds.length]=div;if(getClassList(div)!="background"){div.style.display="none";div.style.visibility="hidden"}}}return backgrounds}function syncBackground(slide){var background;var bgColor;if(slide.currentStyle){bgColor=slide.currentStyle.backgroundColor}else{if(document.defaultView){var styles=document.defaultView.getComputedStyle(slide,null);if(styles){bgColor=styles.getPropertyValue("background-color")}else{bgColor="transparent"}}else{bgColor=="transparent"}}if(bgColor=="transparent"){var slideClass=getClassList(slide);for(var i=0;i<backgrounds.length;i++){background=backgrounds[i];var bgClass=getClassList(background);if(matchingBackground(slideClass,bgClass)){background.style.display="block";background.style.visibility="visible"}else{background.style.display="none";background.style.visibility="hidden"}}}else{hideBackgrounds()}}function hideBackgrounds(){for(var i=0;i<backgrounds.length;i++){background=backgrounds[i];background.style.display="none";background.style.visibility="hidden"}}function matchingBackground(slideClass,bgClass){if(bgClass=="background"){return true}var pattern=/\w+/g;var result=slideClass.match(pattern);for(var i=0;i<result.length;i++){if(hasToken(bgClass,result[i])){return true}}return false}function nextNode(root,node){if(node==null){return root.firstChild}if(node.firstChild){return node.firstChild}if(node.nextSibling){return node.nextSibling}for(;;){node=node.parentNode;if(!node||node==root){break}if(node&&node.nextSibling){return node.nextSibling}}return null}function previousNode(root,node){if(node==null){node=root.lastChild;if(node){while(node.lastChild){node=node.lastChild}}return node}if(node.previousSibling){node=node.previousSibling;while(node.lastChild){node=node.lastChild}return node}if(node.parentNode!=root){return node.parentNode}return null}function incrementalElementList(){var inclist=new Array();inclist.P=true;inclist.PRE=true;inclist.LI=true;inclist.BLOCKQUOTE=true;inclist.DT=true;inclist.DD=true;inclist.H2=true;inclist.H3=true;inclist.H4=true;inclist.H5=true;inclist.H6=true;inclist.SPAN=true;inclist.ADDRESS=true;inclist.TABLE=true;inclist.TR=true;inclist.TH=true;inclist.TD=true;inclist.IMG=true;inclist.OBJECT=true;return inclist}function nextIncrementalItem(node){var slide=slides[slidenum];for(;;){node=nextNode(slide,node);if(node==null||node.parentNode==null){break}if(node.nodeType==1){if(node.nodeName=="BR"){continue}if(hasClass(node,"incremental")&&okayForIncremental[node.nodeName]){return node}if(hasClass(node.parentNode,"incremental")&&!hasClass(node,"non-incremental")){return node}}}return node}function previousIncrementalItem(node){var slide=slides[slidenum];for(;;){node=previousNode(slide,node);if(node==null||node.parentNode==null){break}if(node.nodeType==1){if(node.nodeName=="BR"){continue}if(hasClass(node,"incremental")&&okayForIncremental[node.nodeName]){return node}if(hasClass(node.parentNode,"incremental")&&!hasClass(node,"non-incremental")){return node}}}return node}function setVisibilityAllIncremental(value){var node=nextIncrementalItem(null);while(node){node.style.visibility=value;node=nextIncrementalItem(node)}}function revealNextItem(node){node=nextIncrementalItem(node);if(node&&node.nodeType==1){node.style.visibility="visible"}return node}function hidePreviousItem(node){if(node&&node.nodeType==1){node.style.visibility="hidden"}return previousIncrementalItem(node)}function patchAnchors(){var anchors=document.body.getElementsByTagName("a");for(var i=0;i<anchors.length;++i){anchors[i].onclick=clickedAnchor}}function clickedAnchor(e){if(!e){var e=window.event}if(pageAddress(this.href)==pageAddress(location.href)){var newslidenum=findSlideNumber(this.href);if(newslidenum!=slidenum){slide=slides[slidenum];hideSlide(slide);slidenum=newslidenum;slide=slides[slidenum];showSlide(slide);setLocation()}}else{if(this.target==null){location.href=this.href}}this.blur();stopPropagation(e)}function pageAddress(uri){var i=uri.indexOf("#");if(i<0){i=uri.indexOf("%23")}if(i<0){return uri}return uri.substr(0,i)}function showSlideNumber(){slideNumElement.innerHTML="slide".localize()+" "+(slidenum+1)+"/"+slides.length}function checkLocation(){var hash=location.hash;if(slidenum>0&&(hash==""||hash=="#")){gotoSlide(0)}else{if(hash.length>2&&hash!="#("+(slidenum+1)+")"){var num=parseInt(location.hash.substr(2));if(!isNaN(num)){gotoSlide(num-1)}}}}function setLocation(){var uri=pageAddress(location.href);var hash="#("+(slidenum+1)+")";if(slidenum>=0){uri=uri+hash}if(ie&&!ie8){pushHash(hash)}if(uri!=location.href){location.href=uri}if(khtml){hash="("+(slidenum+1)+")"}if(!ie&&location.hash!=hash&&location.hash!=""){location.hash=hash}document.title=title+" ("+(slidenum+1)+")";showSlideNumber()}function onFrameLoaded(hash){location.hash=hash;var uri=pageAddress(location.href);location.href=uri+hash}function pushHash(hash){if(hash==""){hash="#(1)"}window.location.hash=hash;var doc=document.getElementById("historyFrame").contentWindow.document;doc.open("javascript:'<html></html>'");doc.write('<html><head><script type="text/javascript">parent.onFrameLoaded(\''+(hash)+"');<\/script></head><body>hello mum</body></html>");doc.close()}function findSlideNumber(uri){var i=uri.indexOf("#");if(i<0){return 0}var anchor=unescape(uri.substr(i+1));var target=document.getElementById(anchor);if(!target){var re=/\((\d)+\)/;if(anchor.match(re)){var num=parseInt(anchor.substring(1,anchor.length-1));if(num>slides.length){num=1}if(--num<0){num=0}return num}re=/\[(\d)+\]/;if(anchor.match(re)){var num=parseInt(anchor.substring(1,anchor.length-1));if(num>slides.length){num=1}if(--num<0){num=0}return num}return 0}while(true){if(target.nodeName.toLowerCase()=="div"&&hasClass(target,"slide")){break}target=target.parentNode;if(!target){return 0}}for(i=0;i<slides.length;++i){if(slides[i]==target){return i}}return 0}function slideName(index){var name=null;var slide=slides[index];var heading=findHeading(slide);if(heading){name=extractText(heading)}if(!name){name=title+"("+(index+1)+")"}name.replace(/\&/g,"&amp;");name.replace(/\</g,"&lt;");name.replace(/\>/g,"&gt;");return name}function findHeading(node){if(!node||node.nodeType!=1){return null}if(node.nodeName=="H1"||node.nodeName=="h1"){return node}var child=node.firstChild;while(child){node=findHeading(child);if(node){return node}child=child.nextSibling}return null}function extractText(node){if(!node){return""}if(node.nodeType==3){return node.nodeValue}if(node.nodeType==1){node=node.firstChild;var text="";while(node){text=text+extractText(node);node=node.nextSibling}return text}return""}function findCopyright(){var name,content;var meta=document.getElementsByTagName("meta");for(var i=0;i<meta.length;++i){name=meta[i].getAttribute("name");content=meta[i].getAttribute("content");if(name=="copyright"){return content}}return null}function findSizeAdjust(){var name,content,offset;var meta=document.getElementsByTagName("meta");for(var i=0;i<meta.length;++i){name=meta[i].getAttribute("name");content=meta[i].getAttribute("content");if(name=="font-size-adjustment"){return 1*content}}return 1}function addToolbar(){var slideCounter,page;var toolbar=createElement("div");toolbar.setAttribute("class","toolbar");if(ns_pos){var right=document.createElement("div");right.setAttribute("style","float: right; text-align: right");slideCounter=document.createElement("div");slideCounter.innerHTML="slide".localize()+" n/m";right.appendChild(slideCounter);toolbar.appendChild(right);var left=document.createElement("div");left.setAttribute("style","text-align: left");eos=document.createElement("span");eos.innerHTML="* ";left.appendChild(eos);var help=document.createElement("a");help.setAttribute("href",helpPage);help.setAttribute("title",helpText.localize());help.innerHTML="help?".localize();left.appendChild(help);helpAnchor=help;var gap1=document.createTextNode(" ");left.appendChild(gap1);var contents=document.createElement("a");contents.setAttribute("href","javascript:toggleTableOfContents()");contents.setAttribute("title","table of contents".localize());contents.innerHTML="contents?".localize();left.appendChild(contents);var gap2=document.createTextNode(" ");left.appendChild(gap2);var start=document.createElement("a");start.setAttribute("href","javascript:firstSlide()");start.setAttribute("title","restart presentation".localize());start.innerHTML="restart?".localize();left.appendChild(start);var copyright=findCopyright();if(copyright){var span=document.createElement("span");span.innerHTML=copyright;span.style.color="black";span.style.marginLeft="4em";left.appendChild(span)}toolbar.appendChild(left)}else{toolbar.style.position=(ie7?"fixed":"absolute");toolbar.style.zIndex="200";toolbar.style.width="99.9%";toolbar.style.height="1.2em";toolbar.style.top="auto";toolbar.style.bottom="0";toolbar.style.left="0";toolbar.style.right="0";toolbar.style.textAlign="left";toolbar.style.fontSize="60%";toolbar.style.color="red";toolbar.borderWidth=0;toolbar.className="toolbar";toolbar.style.background="rgb(240,240,240)";var sp=document.createElement("span");sp.innerHTML="&nbsp;&nbsp;*&nbsp;";toolbar.appendChild(sp);eos=sp;var help=document.createElement("a");help.setAttribute("href",helpPage);help.setAttribute("title",helpText.localize());help.innerHTML="help?".localize();toolbar.appendChild(help);helpAnchor=help;var gap1=document.createTextNode(" ");toolbar.appendChild(gap1);var contents=document.createElement("a");contents.setAttribute("href","javascript:toggleTableOfContents()");contents.setAttribute("title","table of contents".localize());contents.innerHTML="contents?".localize();toolbar.appendChild(contents);var gap2=document.createTextNode(" ");toolbar.appendChild(gap2);var start=document.createElement("a");start.setAttribute("href","javascript:firstSlide()");start.setAttribute("title","restart presentation".localize());start.innerHTML="restart?".localize();toolbar.appendChild(start);var copyright=findCopyright();if(copyright){var span=document.createElement("span");span.innerHTML=copyright;span.style.color="black";span.style.marginLeft="2em";toolbar.appendChild(span)}slideCounter=document.createElement("div");slideCounter.style.position="absolute";slideCounter.style.width="auto";slideCounter.style.height="1.2em";slideCounter.style.top="auto";slideCounter.style.bottom=0;slideCounter.style.right="0";slideCounter.style.textAlign="right";slideCounter.style.color="red";slideCounter.style.background="rgb(240,240,240)";slideCounter.innerHTML="slide".localize()+" n/m";toolbar.appendChild(slideCounter)}toolbar.onclick=stopPropagation;document.body.appendChild(toolbar);slideNumElement=slideCounter;setEosStatus(false);return toolbar}function isShownToc(){if(toc&&toc.style.visible=="visible"){return true}return false}function showTableOfContents(){if(toc){if(toc.style.visibility!="visible"){toc.style.visibility="visible";toc.style.display="block";toc.focus();if(ie7&&slidenum==0){setTimeout("ieHack()",100)}}else{hideTableOfContents()}}}function hideTableOfContents(){if(toc&&toc.style.visibility!="hidden"){toc.style.visibility="hidden";toc.style.display="none";try{if(!opera){helpAnchor.focus()}}catch(e){}}}function toggleTableOfContents(){if(toc){if(toc.style.visible!="visible"){showTableOfContents()}else{hideTableOfContents()}}}function gotoEntry(e){var target;if(!e){var e=window.event}if(e.target){target=e.target}else{if(e.srcElement){target=e.srcElement}}if(target.nodeType==3){target=target.parentNode}if(target&&target.nodeType==1){var uri=target.getAttribute("href");if(uri){var slide=slides[slidenum];hideSlide(slide);slidenum=findSlideNumber(uri);slide=slides[slidenum];lastShown=null;setLocation();setVisibilityAllIncremental("hidden");setEosStatus(!nextIncrementalItem(lastShown));showSlide(slide);try{if(!opera){helpAnchor.focus()}}catch(e){}}}hideTableOfContents(e);if(ie7){ieHack()}stopPropagation(e);return cancel(e)}function gotoTocEntry(event){var key;if(!event){var event=window.event}if(window.event){key=window.event.keyCode}else{if(event.which){key=event.which}else{return true}}if(!key){return true}if(event.ctrlKey||event.altKey){return true}if(key==13){var uri=this.getAttribute("href");if(uri){var slide=slides[slidenum];hideSlide(slide);slidenum=findSlideNumber(uri);slide=slides[slidenum];lastShown=null;setLocation();setVisibilityAllIncremental("hidden");setEosStatus(!nextIncrementalItem(lastShown));showSlide(slide);try{if(!opera){helpAnchor.focus()}}catch(e){}}hideTableOfContents();if(ie7){ieHack()}return cancel(event)}if(key==40&&this.next){this.next.focus();return cancel(event)}if(key==38&&this.previous){this.previous.focus();return cancel(event)}return true}function isTitleSlide(slide){return hasClass(slide,"title")}function tableOfContents(){var toc=document.createElement("div");addClass(toc,"toc");var heading=document.createElement("div");addClass(heading,"toc-heading");heading.innerHTML="Table of Contents".localize();heading.style.textAlign="center";heading.style.width="100%";heading.style.margin="0";heading.style.marginBottom="1em";heading.style.borderBottomStyle="solid";heading.style.borderBottomColor="rgb(180,180,180)";heading.style.borderBottomWidth="1px";toc.appendChild(heading);var previous=null;for(var i=0;i<slides.length;++i){var title=hasClass(slides[i],"title");var num=document.createTextNode((i+1)+". ");toc.appendChild(num);var a=document.createElement("a");a.setAttribute("href","#("+(i+1)+")");if(title){addClass(a,"titleslide")}var name=document.createTextNode(slideName(i));a.appendChild(name);a.onclick=gotoEntry;a.onkeydown=gotoTocEntry;a.previous=previous;if(previous){previous.next=a}toc.appendChild(a);if(i==0){toc.first=a}if(i<slides.length-1){var br=document.createElement("br");toc.appendChild(br)}previous=a}toc.focus=function(){if(this.first){this.first.focus()}};toc.onmouseup=mouseButtonUp;toc.onclick=function(e){e||(e=window.event);if(selectedTextLen<=0){hideTableOfContents()}stopPropagation(e);if(e.cancel!=undefined){e.cancel=true}if(e.returnValue!=undefined){e.returnValue=false}return false};toc.style.position="absolute";toc.style.zIndex="300";toc.style.width="60%";toc.style.maxWidth="30em";toc.style.height="30em";toc.style.overflow="auto";toc.style.top="auto";toc.style.right="auto";toc.style.left="4em";toc.style.bottom="4em";toc.style.padding="1em";toc.style.background="rgb(240,240,240)";toc.style.borderStyle="solid";toc.style.borderWidth="2px";toc.style.fontSize="60%";document.body.insertBefore(toc,document.body.firstChild);return toc}function replaceByNonBreakingSpace(str){for(var i=0;i<str.length;++i){str[i]=160}}function initOutliner(){var items=document.getElementsByTagName("LI");for(var i=0;i<items.length;++i){var target=items[i];if(!hasClass(target.parentNode,"outline")){continue}target.onclick=outlineClick;if(!ns_pos){target.onmouseover=hoverOutline;target.onmouseout=unhoverOutline}if(foldable(target)){target.foldable=true;target.onfocus=function(){outline=this};target.onblur=function(){outline=null};if(!target.getAttribute("tabindex")){target.setAttribute("tabindex","0")}if(hasClass(target,"expand")){unfold(target)}else{fold(target)}}else{addClass(target,"nofold");target.visible=true;target.foldable=false}}}function foldable(item){if(!item||item.nodeType!=1){return false}var node=item.firstChild;while(node){if(node.nodeType==1&&isBlock(node)){return true}node=node.nextSibling}return false}function fold(item){if(item){removeClass(item,"unfolded");addClass(item,"folded")}var node=item?item.firstChild:null;while(node){if(node.nodeType==1&&isBlock(node)){node.display=getElementStyle(node,"display","display");node.style.display="none";node.style.visibility="hidden"}node=node.nextSibling}item.visible=false}function unfold(item){if(item){addClass(item,"unfolded");removeClass(item,"folded")}var node=item?item.firstChild:null;while(node){if(node.nodeType==1&&isBlock(node)){node.style.display=(node.display?node.display:"block");node.style.visibility="visible"}node=node.nextSibling}item.visible=true}function outlineClick(e){var rightclick=false;var target;if(!e){var e=window.event}if(e.target){target=e.target}else{if(e.srcElement){target=e.srcElement}}if(target.nodeType==3){target=target.parentNode}while(target&&target.visible==undefined){target=target.parentNode}if(!target){return true}if(e.which){rightclick=(e.which==3)}else{if(e.button){rightclick=(e.button==2)}}if(!rightclick&&target.visible!=undefined){if(target.foldable){if(target.visible){fold(target)}else{unfold(target)}}stopPropagation(e);e.cancel=true;e.returnValue=false}return false}function hoverOutline(e){var target;if(!e){var e=window.event}if(e.target){target=e.target}else{if(e.srcElement){target=e.srcElement}}if(target.nodeType==3){target=target.parentNode}while(target&&target.visible==undefined){target=target.parentNode}if(target&&target.foldable){target.style.cursor="pointer"}return true}function unhoverOutline(e){var target;if(!e){var e=window.event}if(e.target){target=e.target}else{if(e.srcElement){target=e.srcElement}}if(target.nodeType==3){target=target.parentNode}while(target&&target.visible==undefined){target=target.parentNode}if(target){target.style.cursor="default"}return true}function stopPropagation(e){if(window.event){window.event.cancelBubble=true}else{if(e){e.cancelBubble=true;e.stopPropagation()}}}function isBlock(elem){var tag=elem.nodeName;return tag=="OL"||tag=="UL"||tag=="P"||tag=="LI"||tag=="TABLE"||tag=="PRE"||tag=="H1"||tag=="H2"||tag=="H3"||tag=="H4"||tag=="H5"||tag=="H6"||tag=="BLOCKQUOTE"||tag=="ADDRESS"}function getElementStyle(elem,IEStyleProp,CSSStyleProp){if(elem.currentStyle){return elem.currentStyle[IEStyleProp]}else{if(window.getComputedStyle){var compStyle=window.getComputedStyle(elem,"");return compStyle.getPropertyValue(CSSStyleProp)}}return""}function createElement(element){if(typeof document.createElementNS!="undefined"){return document.createElementNS("http://www.w3.org/1999/xhtml",element)}if(typeof document.createElement!="undefined"){return document.createElement(element)}return false}function getElementsByTagName(name){if(typeof document.getElementsByTagNameNS!="undefined"){return document.getElementsByTagNameNS("http://www.w3.org/1999/xhtml",name)}if(typeof document.getElementsByTagName!="undefined"){return document.getElementsByTagName(name)}return null}function getSelectedText(){try{if(window.getSelection){return window.getSelection().toString()}if(document.getSelection){return document.getSelection().toString()}if(document.selection){return document.selection.createRange().text}}catch(e){return""}return""};
+  </script>
+</head>
+<body>
+<div class="slide cover title">
+  <h1 class="title">Haskell: Functional Programming, Solid Code, Big Data</h1>
+  <p class="author">
+Bryan O'Sullivan
+  </p>
+  <p class="date">2011-09-18</p> 
+</div>
+<div class="slide">
+
+<h1>Welcome!</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">main <span class="fu">=</span> <span class="fu">putStrLn</span> <span class="st">&quot;hello!&quot;</span></code></pre>
+<ul>
+<li><p>My name is Bryan O'Sullivan</p></li>
+<li><p>I started using Haskell in 1993</p></li>
+<li><p>I wrote a book about it, &quot;Real World Haskell&quot;</p>
+<ul>
+<li><a href="http://book.realworldhaskell.org/">realworldhaskell.org</a></li>
+</ul></li>
+<li><p>I write lots of open source code</p>
+<ul>
+<li><a href="https://github.com/bos">github.com/bos</a></li>
+</ul></li>
+<li><p>My company invests heavily and openly in Haskell</p>
+<ul>
+<li><a href="https://github.com/mailrank">github.com/mailrank</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Copy these slides (if you want)</h1>
+<pre><code>git clone https://github.com/bos/strange-loop-2011
+</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>My Haskell background</h1>
+<ul>
+<li><p>Began using Haskell at university</p></li>
+<li><p>When I graduated in 1995, I switched to more mainstream languages</p>
+<ul>
+<li>C, C++, Java, Python, Perl, etc.</li>
+</ul></li>
+<li><p>My interest reawakened around 2005</p></li>
+<li><p>I've found Haskell to be a great general-purpose language</p></li>
+<li><p>The community of people is amazing</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>What to expect 1</h1>
+<ul>
+<li><p>Haskell is a fairly big language</p></li>
+<li><p>Since so much is unfamiliar to newcomers, expect to wander far from your comfort zone</p></li>
+<li><p>I'm going to teach you <em>interesting</em> things, but not <em>everything</em></p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>What to expect 2</h1>
+<ul>
+<li><p>This is a <em>hands-on</em> workshop: you'll be writing code!</p></li>
+<li><p>There will be a short break every 45 minutes</p></li>
+<li><p>Don't be afraid to ask questions!</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Your tools</h1>
+<ul>
+<li><p>You've already installed the Haskell Platform, right?</p>
+<ul>
+<li><a href="http://hackage.haskell.org/platform/">hackage.haskell.org/platform</a></li>
+</ul></li>
+<li><p>This gives us a great toolchain</p>
+<ul>
+<li><p>The GHC compiler (<code>ghc</code>)</p></li>
+<li><p>The GHCi interpreter (<code>ghci</code>)</p></li>
+<li><p>The Cabal package manager (<code>cabal</code>)</p></li>
+<li><p>Some handy libraries and tools</p></li>
+</ul></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>What else is needed?</h1>
+<ul>
+<li><p>A text editor</p></li>
+<li><p>A terminal window</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Problem definition</h1>
+<p>Given a web site, we want to scrape it and find important web pages.</p>
+<p>This involves a lot of figuring stuff out!</p>
+<ol style="list-style-type: decimal">
+<li><p>Learn Haskell</p></li>
+<li><p>Download one web page</p></li>
+<li><p>Extract links from a page, so we can find more pages to download</p></li>
+<li><p>Once we're done, compute which ones are important</p></li>
+<li><p>Make it all fast?</p></li>
+</ol>
+</div>
+
+<div class="slide">
+
+<h1>Let's get started!</h1>
+<p>Create a file named <code>Hello.hs</code> and give it the following contents:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">main <span class="fu">=</span> <span class="fu">putStrLn</span> <span class="st">&quot;hello, world!&quot;</span></code></pre>
+<p>The suffix <code>.hs</code> is the standard for Haskell source files.</p>
+<p>File names start with a capital letter, and everyone uses <code>CamelCase</code>.</p>
+</div>
+
+<div class="slide">
+
+<h1>Building it</h1>
+<p>This command will look for <code>Hello.hs</code> in the current directory, and compile it:</p>
+<pre><code>ghc --make Hello
+</code></pre>
+<p>The generated executable will be named <code>Hello</code> (<code>Hello.exe</code> on Windows).</p>
+<ul>
+<li>That <code>--make</code> option up there tells GHC to automatically deal with dependencies on source files and packages.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Checking in</h1>
+<p>Is everyone able to build and run their <code>Hello</code> executable?</p>
+</div>
+
+<div class="slide">
+
+<h1>Something a little more convenient</h1>
+<p>It's nice to have fast, native code at our fingertips.</p>
+<p>But when <em>I'm</em> working, I expect a few things:</p>
+<ul>
+<li><p>I do lots of exploration.</p></li>
+<li><p>I make tons of mistakes.</p></li>
+</ul>
+<p>For these circumstances, a full compiler is a bit slow.</p>
+<p>Instead, I often use the interactive interpreter, <code>ghci</code>.</p>
+</div>
+
+<div class="slide">
+
+<h1>Let's start GHCi</h1>
+<p>Easily done:</p>
+<pre><code>ghci
+</code></pre>
+<p>It will display a startup banner, followed by a prompt:</p>
+<pre><code>Prelude&gt;
+</code></pre>
+<p>This default prompt tells us which modules are available to play with.</p>
+</div>
+
+<div class="slide">
+
+<h1>Play around</h1>
+<p>The <code>ghci</code> interpreter evaluates expressions interactively.</p>
+<p>Try it out:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="dv">2</span> <span class="fu">+</span> <span class="dv">2</span></code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="dv">123456781234567812345678</span> <span class="fu">*</span> <span class="dv">87654321876543</span></code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">++</span> <span class="st">&quot;bar&quot;</span></code></pre>
+<p>(That <code>++</code> is the &quot;append&quot; operator.)</p>
+</div>
+
+<div class="slide">
+
+<h1>Directives</h1>
+<p>All interpreter directives start with a &quot;<code>:</code>&quot; character.</p>
+<p>Let's load our source file into <code>ghci</code>:</p>
+<pre><code>:load Hello.hs
+</code></pre>
+<p>Now the <code>ghci</code> prompt changes:</p>
+<pre><code>*Main&gt;
+</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Running our code in ghci</h1>
+<p>We defined a function named <code>main</code>, so let's invoke it:</p>
+<pre><code>main
+</code></pre>
+<p>Did that work for you?</p>
+<p>What about this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">putStrLn</span> <span class="st">&quot;hi mom!&quot;</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>A few more useful directives</h1>
+<p>Remember, all <code>ghci</code> directives start with a &quot;<code>:</code>&quot;.</p>
+<ul>
+<li><p><code>:help</code> tells us what directives are available.</p></li>
+<li><p><code>:reload</code> reloads the file we last <code>:load</code>ed.</p></li>
+<li><p><code>:edit</code> launches our text editor on the file you most recently <code>:load</code>ed. (Does <em>not</em> automatically <code>:reload</code>.)</p></li>
+<li><p><code>:quit</code> exits back to the shell.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Final ghci efficiency tips</h1>
+<p>We can abbreviate directives:</p>
+<ul>
+<li><p><code>:e</code> is treated as <code>:edit</code></p></li>
+<li><p><code>:r</code> is <code>:reload</code></p></li>
+</ul>
+<p>We also have command line history and editing.</p>
+<ul>
+<li><p>On Unix, compatible with <code>readline</code>.</p></li>
+<li><p>On Windows, the same as <code>cmd.exe</code>.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Getting used to the cycle</h1>
+<p>Use <code>:edit</code> or your text editor to change the &quot;hello&quot; text.</p>
+<p>Use <code>:reload</code> to reload the source file.</p>
+<p>Test out your redefinition of <code>main</code>.</p>
+<ul>
+<li>For practice, hit the &quot;up arrow&quot; key to cycle through your command history until you get back to the last time you typed <code>main</code>.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Lists and strings</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell">[<span class="ch">'h'</span>,<span class="ch">'e'</span>,<span class="ch">'l'</span>,<span class="ch">'l'</span>,<span class="ch">'o'</span>]</code></pre>
+<p>Double quotes are just syntactic sugar for the longer form:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="st">&quot;hello&quot;</span></code></pre>
+<p>What does this print?</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">==</span> [<span class="ch">'f'</span>,<span class="ch">'o'</span>,<span class="ch">'o'</span>]</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Calling functions: 1</h1>
+<p>We use white space to separate a function from its argument:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">head</span> <span class="st">&quot;foo&quot;</span></code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">head</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">tail</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Calling functions: 2</h1>
+<p>If a function takes multiple arguments, we separate them with white space:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">min</span> <span class="dv">3</span> <span class="dv">4</span></code></pre>
+<p>If an argument is a compound expression, wrap it in parentheses:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">compare</span> (<span class="dv">3</span><span class="fu">+</span><span class="dv">5</span>) (<span class="dv">2</span><span class="fu">+</span><span class="dv">7</span>)</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">max</span> (<span class="fu">min</span> <span class="dv">3</span> <span class="dv">4</span>) <span class="dv">5</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Quick exercises: 1</h1>
+<p>Use <code>ghci</code> as a calculator.</p>
+<p>The <code>**</code> operator performs exponentiation.</p>
+<ul>
+<li>If I invest 5 quatloos at 3% compound interest per annum, how many quatloos will I have after 10 years?</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Quick exercises: 2</h1>
+<p>The notation <code>['a'..'z']</code> generates a list from start to end, inclusive.</p>
+<p>The <code>sum</code> function adds the elements of a list.</p>
+<ul>
+<li>What is the sum of the numbers between 9 and 250, inclusive, <em>minus</em> 2?</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Quick exercises: 3</h1>
+<p>The <code>show</code> function renders a value as a string. Try it!</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">show</span> (<span class="dv">1</span> <span class="fu">==</span> <span class="dv">2</span>)</code></pre>
+<p>The <code>length</code> function tells us how many elements are in a list.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">length</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+<ul>
+<li>How many digits are in the product of all numbers between 0xBE and 0xEF, inclusive?</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Defining a function</h1>
+<p>It is pretty simple to define a new function.</p>
+<p>Open up your text editor, create a new file with a <code>.hs</code> extension, and get writing!</p>
+<pre class="sourceCode"><code class="sourceCode haskell">isOdd x  <span class="fu">=</span>  (<span class="fu">rem</span> x <span class="dv">2</span>) <span class="fu">==</span> <span class="dv">1</span></code></pre>
+<ul>
+<li><p>We start with the name of the function.</p></li>
+<li><p>Next come the names we want to give its parameter(s), separated by white space.</p></li>
+<li><p>After those come a single <code>=</code> character, with the <em>body</em> of the function following.</p></li>
+</ul>
+<p>Load your source file into <code>ghci</code> and give <code>myOdd</code> a try.</p>
+</div>
+
+<div class="slide">
+
+<h1>Making life more interesting</h1>
+<p>Now we can define very simple functions, but we're missing some important building blocks for more fun.</p>
+<p>So let's get to it!</p>
+</div>
+
+<div class="slide">
+
+<h1>Conditional execution</h1>
+<p>Q: What does the familiar <code>if</code> look like in Haskell?</p>
+<p>A: Familiar!</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">gcd</span> a b <span class="fu">=</span> <span class="kw">if</span> b <span class="fu">==</span> <span class="dv">0</span><br />          <span class="kw">then</span> a<br />      <span class="kw">else</span> <span class="fu">gcd</span> b (<span class="fu">rem</span> a b)</code></pre>
+<p>We have the following elements:</p>
+<ul>
+<li><p>A Boolean expression</p></li>
+<li><p><code>then</code> an expression that will be the result if the Boolean is <code>True</code></p></li>
+<li><p><code>else</code> an expression that will be the result if the Boolean is <code>False</code></p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Finally! A tiny bit about types</h1>
+<p>The two possible results of an <code>if</code> expression must have the same type.</p>
+<p>If <code>then</code> evaluates to a <code>String</code>, well <code>else</code> must too!</p>
+<p>For instance, this makes no sense:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">if</span> <span class="kw">True</span><br /><span class="kw">then</span> <span class="dv">3</span><span class="fu">.</span><span class="dv">14</span><br /><span class="kw">else</span> <span class="st">&quot;wombat&quot;</span></code></pre>
+<p>We are forbidden from writing ill-typed expressions like this.</p>
+</div>
+
+<div class="slide">
+
+<h1>What about else?</h1>
+<p>In imperative languages, we can usually leave out the <code>else</code> clause after an <code>if</code>.</p>
+<p>Not so in Haskell.</p>
+<p>Why does this make sense for imperative languages, but not Haskell?</p>
+</div>
+
+<div class="slide">
+
+<h1>A nearly trivial exercise</h1>
+<p>Write a function that appends <code>&quot;, world&quot;</code> to its argument if the argument is <code>&quot;hello&quot;</code>, or just returns its argument unmodified otherwise.</p>
+<ul>
+<li>Remember, the &quot;append&quot; function is an operator named <code>++</code>.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Lists in Haskell</h1>
+<p>We already know what a list looks like in Haskell:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+<p>And of course there's the syntactic sugar for strings:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">==</span> [<span class="ch">'f'</span>,<span class="ch">'o'</span>,<span class="ch">'o'</span>]</code></pre>
+<p>But is this everything there is to know?</p>
+</div>
+
+<div class="slide">
+
+<h1>List constructors</h1>
+<p>Supposing we want to construct a list from first principles.</p>
+<ul>
+<li><p>We write the <em>empty list</em> as <code>[]</code>.</p></li>
+<li><p>Given an existing list, we can add another element to the <em>front</em> of the list using the <code>:</code> operator.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Type this into ghci</h1>
+<p>Add an element to an empty list:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">:</span> []</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>From single-element lists onwards</h1>
+<p>What about extending that list?</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="dv">2</span> <span class="fu">:</span> (<span class="dv">1</span> <span class="fu">:</span> [])</code></pre>
+<p>You're probably guessing now that <code>[2,1]</code> is syntactic sugar for <code>2:(1:[])</code>. And you're right!</p>
+<p>What is the result of this expression?</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="dv">5</span> <span class="fu">:</span> <span class="dv">8</span> <span class="fu">:</span> [] <span class="fu">==</span> [<span class="dv">5</span>,<span class="dv">8</span>]</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Constructors</h1>
+<p>We refer to <code>[]</code> and <code>:</code> as <em>constructors</em>, because we use them to construct lists.</p>
+<p>When you create a list, the Haskell runtime has to remember which constructors you used, and where.</p>
+<p>So the value <code>[5,8]</code> is represented as:</p>
+<ul>
+<li><p>A <code>:</code> constructor, with <code>5</code> as its first parameter, and as its second ...</p></li>
+<li><p>Another <code>:</code> constructor, this time with <code>8</code> as its first parameter, and now as its second ...</p></li>
+<li><p>A <code>[]</code> constructor</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>What did we see?</h1>
+<p>Depending on your background, I bet you're thinking something like this:</p>
+<ul>
+<li><p>&quot;Hey! Haskell lists look like singly linked lists!&quot;</p></li>
+<li><p>&quot;Hey! That looks just like lists built out of <code>cons</code> cells in Lisp!&quot;</p></li>
+</ul>
+<p>Right on.</p>
+</div>
+
+<div class="slide">
+
+<h1>Why do we care about constructors?</h1>
+<p>Of course Haskell has to remember what a list is constructed of.</p>
+<p>It also lets <em>us</em> inspect a list, to see which constructors were used.</p>
+<p>How do we do this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.Char</span><br /><br />isCapitalized name<br />  <span class="fu">=</span> <span class="kw">case</span> name <span class="kw">of</span><br />      (first<span class="fu">:</span>rest) <span class="ot">-&gt;</span> <span class="fu">isUpper</span> first<br />      []           <span class="ot">-&gt;</span> <span class="kw">False</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Welcome to the case expression</h1>
+<p>A <code>case</code> expression allows us to <em>inspect</em> a structure to see how it was constructed.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">isCapitalized name<br />  <span class="fu">=</span> <span class="kw">case</span> name <span class="kw">of</span><br />      []           <span class="ot">-&gt;</span> <span class="kw">False</span><br />      (first<span class="fu">:</span>rest) <span class="ot">-&gt;</span> <span class="fu">isUpper</span> first</code></pre>
+<ul>
+<li><p>In between <code>case</code> and <code>of</code> is the expression we are inspecting.</p></li>
+<li><p>If the constructor used was the empty-list constructor <code>[]</code>, then clearly the <code>name</code> we're inspecting is empty, hence not capitalized.</p></li>
+</ul>
+<p>If the constructor used was the &quot;add to the front&quot; <code>:</code> operator, then things get more interesting.</p>
+<ul>
+<li><p>Whatever was the first parameter of the <code>:</code> constructor is bound to the name <code>first</code>.</p></li>
+<li><p>The second parameter of the <code>:</code> constructor (i.e. everything in the list after the first element) is bound to the name <code>rest</code>.</p></li>
+<li><p>The expression following the <code>-&gt;</code> is evaluated with these values.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Pattern matching</h1>
+<p>The <code>case</code> expression performs what we call <em>pattern matching</em>.</p>
+<ul>
+<li><p>Patterns are checked from top to bottom.</p></li>
+<li><p>As soon as a match is found, its right hand side (after the <code>-&gt;</code>) is used as the result of the entire <code>case</code> expression.</p></li>
+<li><p>If no match succeeds, an exception is thrown.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>A worked example</h1>
+<p>Let's step through the machinery of what happens if we evaluate this expression.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">isCapitalized <span class="st">&quot;Ann&quot;</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Whew! A few exercises!</h1>
+<p>Finally! We can write slightly more complex functions.</p>
+<p>Now that you can inspect the front of a list, you should be able to process an <em>entire</em> list recursively.</p>
+<p>First, please write a function named <code>myLength</code> that computes the number of elements in a list.</p>
+<p>Next, write a function named <code>countCaps</code> that calculates the number of capital letters in a string.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">countCaps <span class="st">&quot;Monkey Butter&quot;</span> <span class="fu">==</span> <span class="dv">2</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Counting capital letters</h1>
+<p>Wow, that countCaps function was a pain, right?</p>
+<p>Here's my definition that uses only the machinery we've learned so far:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">countCaps string <span class="fu">=</span><br />  <span class="kw">case</span> string <span class="kw">of</span><br />    []     <span class="ot">-&gt;</span> <span class="dv">0</span><br />    (x<span class="fu">:</span>xs) <span class="ot">-&gt;</span> <span class="kw">if</span> <span class="fu">isUpper</span> x<br />              <span class="kw">then</span> <span class="dv">1</span> <span class="fu">+</span> countCaps xs<br />              <span class="kw">else</span> countCaps xs</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Huh.</h1>
+<p>I thought Haskell was all about concision!?</p>
+</div>
+
+<div class="slide">
+
+<h1>Conciseness 1: top-level pattern matching</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">countCaps []     <span class="fu">=</span> <span class="dv">0</span><br />countCaps (x<span class="fu">:</span>xs) <span class="fu">=</span><br />    <span class="kw">if</span> <span class="fu">isUpper</span> x<br />    <span class="kw">then</span> <span class="dv">1</span> <span class="fu">+</span> countCaps xs<br />    <span class="kw">else</span> countCaps xs</code></pre>
+<p>We can define a function as a series of equations, each containing a pattern match.</p>
+<p>This is nice syntactic sugar for <code>case</code>.</p>
+</div>
+
+<div class="slide">
+
+<h1>Conciseness 2: guards</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">countCaps []     <span class="fu">=</span> <span class="dv">0</span><br />countCaps (x<span class="fu">:</span>xs)<br />   <span class="fu">|</span> <span class="fu">isUpper</span> x    <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> countCaps xs<br />   <span class="fu">|</span> <span class="fu">otherwise</span>    <span class="fu">=</span> countCaps xs</code></pre>
+<p>After each <code>|</code> is a <em>guard</em>.</p>
+<ul>
+<li><p>If a pattern matches, we evaluate each Boolean guard expression from top to bottom.</p></li>
+<li><p>When one succeeds, we evaluate the RHS as the body of the function.</p></li>
+</ul>
+<p>(Yes, patterns in a <code>case</code> can have guards too.)</p>
+</div>
+
+<div class="slide">
+
+<h1>Before</h1>
+<p>Like the original version, but with use of <code>case</code> stripped out:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">countCaps xs <span class="fu">=</span><br />  <span class="kw">if</span> <span class="fu">null</span> xs<br />  <span class="kw">then</span> <span class="dv">0</span> <br />  <span class="kw">else</span> <span class="kw">if</span> <span class="fu">isUpper</span> (<span class="fu">head</span> xs)<br />       <span class="kw">then</span> <span class="dv">1</span> <span class="fu">+</span> countCaps (<span class="fu">tail</span> xs)<br />       <span class="kw">else</span> countCaps (<span class="fu">tail</span> xs)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>After</h1>
+<p>Both shorter and easier to follow:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">countCaps []     <span class="fu">=</span> <span class="dv">0</span><br />countCaps (x<span class="fu">:</span>xs)<br />   <span class="fu">|</span> <span class="fu">isUpper</span> x    <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> countCaps xs<br />   <span class="fu">|</span> <span class="fu">otherwise</span>    <span class="fu">=</span> countCaps xs</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Another approach</h1>
+<p>Write a new version of <code>countCaps</code> as follows:</p>
+<ul>
+<li><p>Write a function that goes through a list, and which generates a new list that contains only its capital letters.</p></li>
+<li><p>Use <code>length</code> to count the number of elements.</p></li>
+</ul>
+<p>This should give the same result as your first function. Right?</p>
+</div>
+
+<div class="slide">
+
+<h1>A change of specification</h1>
+<p>Suppose we want to count the number of lowercase letters in a string.</p>
+<p>This seems almost the same as our function for counting uppercase letters.</p>
+<p>What can we do with this observation?</p>
+</div>
+
+<div class="slide">
+
+<h1>Higher order functions</h1>
+<p><em>Higher order function</em>: a function that accepts another function as a parameter.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">filter</span> <span class="fu">pred</span> [] <span class="fu">=</span> []<br /><span class="fu">filter</span> <span class="fu">pred</span> (x<span class="fu">:</span>xs)<br />  <span class="fu">|</span> <span class="fu">pred</span> x     <span class="fu">=</span> x <span class="fu">:</span> <span class="fu">filter</span> <span class="fu">pred</span> xs<br />  <span class="fu">|</span> <span class="fu">otherwise</span>  <span class="fu">=</span>     <span class="fu">filter</span> <span class="fu">pred</span> xs</code></pre>
+<p>How can we use this to define <code>countLowerCase</code>?</p>
+</div>
+
+<div class="slide">
+
+<h1>Data in, data out</h1>
+<p>By now, we've seen several definitions like this:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">countLowerCase string <span class="fu">=</span><br />  <span class="fu">length</span> (<span class="fu">filter</span> <span class="fu">isLower</span> string)</code></pre>
+<p>This is a recurring pattern:</p>
+<ul>
+<li><p>A function of one argument</p></li>
+<li><p>It's being fed the result of ...</p></li>
+<li><p>... another function of one argument</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Function composition</h1>
+<p>Haskell doesn't limit us to giving functions alphanumeric names.</p>
+<p>Here, we define a function named simply &quot;<code>.</code>&quot;, which we can use as an operator:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">(f <span class="fu">.</span> g) x <span class="fu">=</span> f (g x)</code></pre>
+<p>How to use this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell">countLowerCase <span class="fu">=</span> <span class="fu">length</span> <span class="fu">.</span> <span class="fu">filter</span> <span class="fu">isLower</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Understanding composition</h1>
+<p>If that seemed hard to follow, let's make it clearer.</p>
+<p>We'll plug the arguments into the RHS of our function definition:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">(f <span class="fu">.</span> g) x <span class="fu">=</span> f (g x)</code></pre>
+<p>We had <code>length</code> as the first argument to &quot;<code>.</code>&quot;, and <code>filter isLower</code> as the second:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">(<span class="fu">length</span> <span class="fu">.</span> <span class="fu">filter</span> <span class="fu">isLower</span>) x <br />  <span class="fu">=</span> <span class="fu">length</span> (<span class="fu">filter</span> <span class="fu">isLower</span> x)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Local variables</h1>
+<p>Inside an expression, we can introduce new variables using <code>let</code>.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">let</span> x <span class="fu">=</span> <span class="dv">2</span><br />    y <span class="fu">=</span> <span class="dv">4</span><br /><span class="kw">in</span> x <span class="fu">+</span> y</code></pre>
+<ul>
+<li><p>Local definitions come after the <code>let</code>.</p></li>
+<li><p>The expression where we use them comes after the <code>in</code>.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>White space</h1>
+<p>Haskell is sensitive to white space!</p>
+<ul>
+<li><p>A top-level definition starts in the leftmost column.</p></li>
+<li><p>After the beginning of a definition, if the next non-empty line is indented further, it is treated as a continuation of that definition.</p></li>
+<li><p>Never use tabs in your source files.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>White space and local variables</h1>
+<p>If you're defining local variables, they must start in the same column.</p>
+<p>This is good:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">let</span> x <span class="fu">=</span> <span class="dv">2</span><br />    y <span class="fu">=</span> <span class="dv">4</span><br /><span class="kw">in</span> x <span class="fu">+</span> y</code></pre>
+<p>But this will lead to a compiler error:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">let</span> x <span class="fu">=</span> <span class="dv">2</span><br />      y <span class="fu">=</span> <span class="dv">4</span><br /><span class="kw">in</span> x <span class="fu">+</span> y</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Composition exercise</h1>
+<p>Using function composition wherever you can, write a function that accepts a string and returns a new string containing only the words that begin with vowels.</p>
+<ul>
+<li>You'll want to play with the <code>words</code> and <code>unwords</code> functions before you start.</li>
+</ul>
+<p>Example:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">disemvowel <span class="st">&quot;I think, therefore I am.&quot;</span><br />  <span class="fu">==</span> <span class="st">&quot;I I am.&quot;</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>My solution</h1>
+<p>Here's how I wrote <code>disemvowel</code>:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">disemvowel <span class="fu">=</span> <br />  <span class="kw">let</span> isVowel c <span class="fu">=</span> <span class="fu">toLower</span> c <span class="ot">`elem`</span> <span class="st">&quot;aeiou&quot;</span><br />  <span class="kw">in</span>  <span class="fu">unwords</span> <span class="fu">.</span> <span class="fu">filter</span> (isVowel <span class="fu">.</span> <span class="fu">head</span>) <span class="fu">.</span> <span class="fu">words</span></code></pre>
+<p>Does this remind you of a Unix shell pipeline, only right-to-left?</p>
+</div>
+
+<div class="slide">
+
+<h1>Problem definition, once again</h1>
+<p>Given a web site, we want to scrape it and find important web pages.</p>
+<p>We're now Haskell experts, right?</p>
+<ul>
+<li>Download one web page</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Let's download a web page!</h1>
+<p>We'd really like to rely on a library to download a web page for us.</p>
+<p>At times like this, there's a very handy central repository of open source Haskell software:</p>
+<ul>
+<li><p><a href="http://hackage.haskell.org/">http://hackage.haskell.org</a></p></li>
+<li><p>(Everyone just calls it &quot;Hackage&quot;)</p></li>
+</ul>
+<p>Go there now!</p>
+<p>Click on the <a href="http://hackage.haskell.org/packages/archive/pkg-list.html">Packages</a> link at the top of the page to browse packages.</p>
+<p>Alas, the list is overwhelmingly long, but we can find libraries for all kinds of tasks if we're patient.</p>
+<p>Are we patient?</p>
+</div>
+
+<div class="slide">
+
+<h1>Ugh!</h1>
+<p>Scrolling through thousands of libraries is hard - surely there's a better way?</p>
+<p>Enter the <code>cabal</code> command!</p>
+<p>Run this command in a terminal window:</p>
+<pre><code>cabal update
+</code></pre>
+<p>This downloads the latest index of all software on Hackage.</p>
+<p>With the index updated, we can search it:</p>
+<pre><code>cabal list http
+</code></pre>
+<p>That still gives us 20+ packages to comb through, but at least it's better than the 3,400 on the Packages web page.</p>
+</div>
+
+<div class="slide">
+
+<h1>Short-cutting the search</h1>
+<p>The best HTTP client library is named <code>http-enumerator</code>.</p>
+<p>We can read about it online:</p>
+<ul>
+<li><a href="http://hackage.haskell.org/package/http-enumerator">hackage.haskell.org/package/http-enumerator</a></li>
+</ul>
+<p>That landing page for a package is intimidating, but look towards the bottom, at the section labeled &quot;Modules&quot;.</p>
+<p>What do you see?</p>
+</div>
+
+<div class="slide">
+
+<h1>Installing a package</h1>
+<p>Before we can use <code>http-enumerator</code>, we must install it.</p>
+<p>To install the <code>http-enumerator</code> package, we just issue a single command:</p>
+<pre><code>cabal install http-enumerator
+</code></pre>
+<p>This command figures out all the other libraries that <code>http-enumerator</code> depends on, and downloads, compiles, and installs the whole lot.</p>
+<p>Expect it to take a few minutes and print a lot of output.</p>
+</div>
+
+<div class="slide">
+
+<h1>Reading docs: packages and modules</h1>
+<p>While we're waiting for the <code>http-enumerator</code> package and all of its dependencies to install, let's try to figure out how we should use it.</p>
+<p>Remember the link to API documentation at the end of the package's web page? Click through to the API docs.</p>
+<p>An API page begins with a title that looks something like this:</p>
+<pre><code>Network.HTTP.Enumerator
+</code></pre>
+<p>This is the name of a <em>module</em>.</p>
+<p>A module is a collection of related code.</p>
+<p>A <em>package</em> is a collection of related modules.</p>
+<p>(This will sound familiar if you know Python.)</p>
+</div>
+
+<div class="slide">
+
+<h1>Reading docs: the rest</h1>
+<p>After the initial blurb, a module's docs consists of type signatures and descriptions.</p>
+<p>Here is a really simple type signature:</p>
+<pre><code>foo :: String
+</code></pre>
+<p>How the heck do we read this?</p>
+<p>The <em>name</em> of the thing being defined comes before the <code>::</code> characters.</p>
+<p>Its <em>type</em> follows after the <code>::</code>.</p>
+<p>This means &quot;the value named <code>foo</code> has the type <code>String</code>&quot;.</p>
+</div>
+
+<div class="slide">
+
+<h1>Haskell's type system</h1>
+<p>Up until now, we have not bothered talking about types or type signatures.</p>
+<p>Every expression and value in Haskell has a single type.</p>
+<p>Those types can almost always be <em>inferred</em> automatically by the compiler or interpreter.</p>
+</div>
+
+<div class="slide">
+
+<h1>The most common basic types</h1>
+<ul>
+<li><p><code>Bool</code></p></li>
+<li><p><code>Int</code></p></li>
+<li><p><code>Char</code></p></li>
+<li><p><code>Double</code></p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>A function signature</h1>
+<p>Here's another type signature:</p>
+<pre><code>words :: String -&gt; [String]
+</code></pre>
+<p>Here we see a new symbol, <code>-&gt;</code>, which means &quot;this is a function&quot;.</p>
+<p>The type after the last <code>-&gt;</code> is the return type of the function.</p>
+<p>All of its predecessors are argument types.</p>
+<p>So this is a function that takes one <code>String</code> argument, and returns... what?</p>
+</div>
+
+<div class="slide">
+
+<h1>List notation</h1>
+<p>The notation <code>[a]</code> means &quot;a list of values, all of some type <code>a</code>&quot;.</p>
+<p>So <code>[String]</code> means &quot;a list of values, all of type <code>String</code>&quot;.</p>
+</div>
+
+<div class="slide">
+
+<h1>Type synonyms</h1>
+<p>What's a <code>String</code>?</p>
+<ul>
+<li>It's not special, just a <em>synonym</em> for <code>[Char]</code>, i.e. &quot;a list of <code>Char</code>&quot;.</li>
+</ul>
+<p>We can introduce new synonyms of our own.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Dollars</span> <span class="fu">=</span> <span class="dt">Int</span></code></pre>
+<p>A type synonym can be handy for documenting an intended use for an existing type.</p>
+</div>
+
+<div class="slide">
+
+<h1>Words</h1>
+<pre><code>words :: String -&gt; [String]
+</code></pre>
+<p>We can now read that this function accepts a string as argument, and returns a list of strings.</p>
+<p>From reading its name and type signature, can you guess what <code>words</code> might do?</p>
+</div>
+
+<div class="slide">
+
+<h1>Another signature</h1>
+<p>Tell me about this signature:</p>
+<pre><code>mystery :: [String] -&gt; String
+</code></pre>
+<p>What are some reasonable possible behaviours for this function?</p>
+</div>
+
+<div class="slide">
+
+<h1>Reading real-world docs</h1>
+<p>Here is the very first signature from <code>http-enumerator</code>:</p>
+<pre><code>simpleHttp 
+  :: (MonadIO m, Failure HttpException m) =&gt; 
+     String -&gt; m ByteString
+</code></pre>
+<p>This is more complex! How the heck do we read it?</p>
+<p>The bits between <code>::</code> and '=&gt;' are <em>constraints</em> on where we can use <code>simpleHttp</code> - but let's ignore constraints for now.</p>
+<ul>
+<li><em>Important</em>: it's often safe to gloss over things we don't (yet) understand.</li>
+</ul>
+<p>We'll also ignore that mysterious lowercase <code>m</code> for a bit.</p>
+<p>What can we tell about this function?</p>
+</div>
+
+<div class="slide">
+
+<h1>ByteString</h1>
+<p>A <code>ByteString</code> is a blob of binary data.</p>
+<p>Unlike <code>String</code>, it is not represented as a list, but as a packed array.</p>
+<p>However, it contains binary <em>bytes</em>, not text!</p>
+<ul>
+<li>Don't use <code>ByteString</code> for working with data that you have to manipulate as text.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Let's play in ghci!</h1>
+<p>Does everyone have <code>http-enumerator</code> installed now?</p>
+<p>Fire up <code>ghci</code>, and let's play with the module:</p>
+<pre><code>import Network.HTTP.Enumerator
+</code></pre>
+<p>Notice that after we type this, the prompt changes:</p>
+<pre><code>Prelude Network.HTTP.Enumerator&gt;
+</code></pre>
+<p>This tells us that the module has loaded and is available.</p>
+</div>
+
+<div class="slide">
+
+<h1>Wait! Are you on Windows?</h1>
+<p>On Windows, we have to set up Winsock before any networking will work.</p>
+<p>First, let's load the lowest-level networking module:</p>
+<pre><code>import Network.Socket
+</code></pre>
+<p>And here's how we initialize Winsock:</p>
+<pre><code>withSocketsDo (return ())
+</code></pre>
+<p>(It's harmless to do this on Unix.)</p>
+</div>
+
+<div class="slide">
+
+<h1>With that out of the way ...</h1>
+<p>Finally - let's load a web page!</p>
+<pre><code>simpleHttp &quot;http://example.com/&quot;
+</code></pre>
+<p>Did that just print a ton of HTML in the terminal window? All right!</p>
+</div>
+
+<div class="slide">
+
+<h1>From binary to text</h1>
+<p>Now we have a <code>ByteString</code>, which we need to turn into text for manipulating.</p>
+<p>Let's cheat, and assume that all web pages are encoded in UTF-8.</p>
+</div>
+
+<div class="slide">
+
+<h1>Pure code</h1>
+<p>So far, all of the code we have written has been &quot;pure&quot;.</p>
+<ul>
+<li><p>The behaviour of all of our functions has depended only on their inputs.</p></li>
+<li><p>All of our data is immutable.</p></li>
+<li><p>There's thus no way to change a global variable and modify the behaviour of a function.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Impure code</h1>
+<p>And yet ... somehow we downloaded a web page!</p>
+<ul>
+<li>Web pages clearly are <em>not</em> pure.</li>
+</ul>
+<p>So can we write code like this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">length</span> (simpleHttp <span class="st">&quot;http://x.org/&quot;</span>)</code></pre>
+<p>NO.</p>
+<p>The type system segregates code that must be pure from code that may have side effects (&quot;impure&quot; code).</p>
+</div>
+
+<div class="slide">
+
+<h1>Are we stuck?</h1>
+<p>Well, let's look at a simpler example than <code>simpleHttp</code>.</p>
+<p>Type this in <code>ghci</code>:</p>
+<pre><code>:type readFile
+</code></pre>
+<p>This will tell us what the type of <code>readFile</code> is.</p>
+</div>
+
+<div class="slide">
+
+<h1>IO</h1>
+<p>The <code>:type</code> directive should print something like this:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">readFile</span><span class="ot"> </span><span class="ot">::</span> <span class="fu">FilePath</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">String</span></code></pre>
+<p>Notice that <code>IO</code> on the result type?</p>
+<p>It means &quot;this function may have side effects&quot;.</p>
+<p>We often refer to impure functions, with <code>IO</code> in the result type, as <em>actions</em>.</p>
+<ul>
+<li>This helps to distinguish them from pure functions.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Mixing IO and other stuff</h1>
+<p>The type system keeps track of which functions have <code>IO</code> in their types, and keeps us honest.</p>
+<p>We can still mix pure and impure code in a natural way:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">charCount fileName <span class="fu">=</span> <span class="kw">do</span><br />  contents <span class="ot">&lt;-</span> <span class="fu">readFile</span> fileName<br />  <span class="fu">return</span> (<span class="fu">length</span> contents)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>&quot;do&quot; notation</h1>
+<p>Critical to what we just saw was the <code>do</code> keyword at the beginning of the function definition.</p>
+<p>This introduces a series of <code>IO</code> actions, one per line.</p>
+</div>
+
+<div class="slide">
+
+<h1>Capturing the results of impure code</h1>
+<p>To capture the result of an <code>IO</code> action, we use <code>&lt;-</code> instead of <code>=</code>.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">contents <span class="ot">&lt;-</span> <span class="fu">readFile</span> fileName</code></pre>
+<p>The result (<code>contents</code>) is pure - it <em>does not have</em> the <code>IO</code> type.</p>
+<p>This is how we supply pure code with data returned from impure code.</p>
+</div>
+
+<div class="slide">
+
+<h1>The &quot;return&quot; action</h1>
+<p>This is <em>not</em> the <code>return</code> type you're used to!</p>
+<p>It takes a <em>pure</em> value (without <code>IO</code> in its type), and <em>wraps</em> it with the <code>IO</code> type.</p>
+<p>Pure code can't call impure code, but it can thread data back into the impure world using <code>return</code>.</p>
+</div>
+
+<div class="slide">
+
+<h1>Haskell programs and IO</h1>
+<p>When you write a Haskell program, its entry point must be named <code>main</code>.</p>
+<p>The type of <code>main</code> must be:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">main </span><span class="ot">::</span> <span class="dt">IO</span> ()</code></pre>
+<p><code>()</code> is named &quot;unit&quot;, and means more or less the same thing as <code>void</code> in C or Java.</p>
+<p>What this means is that <em>all</em> Haskell programs are impure!</p>
+</div>
+
+<div class="slide">
+
+<h1>Binary to text</h1>
+<p>Remember we were planning to cheat earlier?</p>
+<p>We had this:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">simpleHttp </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> <span class="dt">ByteString</span></code></pre>
+<p>We need something whose result is an <code>IO String</code> instead.</p>
+<p>How should that look?</p>
+</div>
+
+<div class="slide">
+
+<h1>UTF-8 conversion</h1>
+<p>To do the conversion, let's grab a package named <code>utf8-string</code>.</p>
+<pre><code>cabal install utf8-string
+</code></pre>
+<p>That contains a package named <code>Data.ByteString.Lazy.UTF8</code>.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.ByteString.Lazy.UTF8</span></code></pre>
+<p>It defines a function named <code>toString</code>:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">toString </span><span class="ot">::</span> <span class="dt">ByteString</span> <span class="ot">-&gt;</span> <span class="dt">String</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>UTF-8 conversion exercise</h1>
+<p>Write an action that downloads a URL and converts it from a <code>ByteString</code> to a <code>String</code> using <code>toString</code>.</p>
+<p>Write a type signature for the action.</p>
+<ul>
+<li><p>Haskell definitions usually don't require type signatures.</p></li>
+<li><p>Nevertheless, we write them for <em>documentation</em> on almost all top-level definitions.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Downloading and saving a web page</h1>
+<p>Use your <code>download</code> function to save a local copy of the page you just wrote.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">saveAs </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()</code></pre>
+<p>For simplicity, let's save the local files as names containing numbers:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">makeFileName </span><span class="ot">::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="fu">FilePath</span><br />makeFileName k <span class="fu">=</span> <span class="st">&quot;download-&quot;</span> <span class="fu">++</span> <span class="fu">show</span> k <span class="fu">++</span> <span class="st">&quot;.html&quot;</span></code></pre>
+<p>To save a local copy of a file, you'll need the <code>writeFile</code> action.</p>
+</div>
+
+<div class="slide">
+
+<h1>Shoveling through HTML</h1>
+<p>Two truisms:</p>
+<ul>
+<li><p>Most HTML in the wild is a mess.</p></li>
+<li><p>Even parsing well formed HTML is complicated.</p></li>
+</ul>
+<p>So! Let's use another library.</p>
+<pre><code>cabal install tagsoup
+</code></pre>
+<p>The <code>tagsoup</code> package can parse arbitrarily messy HTML.</p>
+<p>It will feed us a list of events, like a SAX parser.</p>
+</div>
+
+<div class="slide">
+
+<h1>Dealing with problems</h1>
+<p>Try this:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">head</span> [<span class="dv">1</span>]</code></pre>
+<p>Now try this:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="fu">head</span> []</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Oops</h1>
+<p>If we pass an empty list, the <code>head</code> function throws an exception.</p>
+<p>Suppose we need a version of <code>head</code> that will <em>not</em> throw an exception.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">safeHead </span><span class="ot">::</span> [a] <span class="ot">-&gt;</span> <span class="fu">????</span></code></pre>
+<p>What should the <code>????</code> be?</p>
+<p>Let's invent something.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">safeHead (x<span class="fu">:</span>xs) <span class="fu">=</span> <span class="dt">Some</span> x<br />safeHead []     <span class="fu">=</span> <span class="dt">None</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Some? None?</h1>
+<ul>
+<li><p>We're using a constructor named <code>Some</code> to capture the idea &quot;we have a result&quot;.</p></li>
+<li><p>The constructor <code>None</code> indicates &quot;we don't have a result here&quot;.</p></li>
+</ul>
+<p>To bring these constructors into existence, we need to declare a new type.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Perhaps</span> a <span class="fu">=</span> <span class="dt">Some</span> a<br />               <span class="fu">|</span> <span class="dt">None</span></code></pre>
+<p>The <code>|</code> character separates the constructors. We can read it as:</p>
+<ul>
+<li><p>The <code>Perhaps</code> type has two constructors:</p></li>
+<li><p><code>Some</code> followed by a single argument</p></li>
+<li><p>or <code>None</code> with no arguments</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Maybe</h1>
+<p>Actually, Haskell already has a <code>Perhaps</code> type.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Maybe</span> a <span class="fu">=</span> <span class="kw">Just</span> a<br />             <span class="fu">|</span> <span class="kw">Nothing</span></code></pre>
+<p>The <code>a</code> is a <em>type parameter</em>, meaning that when we write this type, we have to supply another type as a parameter:</p>
+<ul>
+<li><p><code>Maybe Int</code></p></li>
+<li><p><code>Maybe String</code></p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Using constructors</h1>
+<p>If we want to construct a <code>Maybe Int</code> using the <code>Just</code> constructor, we must pass it an <code>Int</code>.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">Just</span> <span class="dv">1</span><span class="ot">  </span><span class="ot">::</span> <span class="dt">Maybe</span> <span class="dt">Int</span><br /><span class="kw">Nothing</span><span class="ot"> </span><span class="ot">::</span> <span class="dt">Maybe</span> <span class="dt">Int</span></code></pre>
+<p>This will not work, because the types don't match:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">Just</span> [<span class="dv">1</span>]<span class="ot"> </span><span class="ot">::</span> <span class="dt">Maybe</span> <span class="dt">String</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Pattern matching over constructors</h1>
+<p>We can pattern match over the constructors for <code>Maybe</code> just as we did for lists.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">case</span> foo <span class="kw">of</span><br />  <span class="kw">Just</span> x  <span class="ot">-&gt;</span> x<br />  <span class="kw">Nothing</span> <span class="ot">-&gt;</span> bar</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Tags</h1>
+<p>The <code>tagsoup</code> package defines the following type:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Tag</span> <span class="fu">=</span> <span class="dt">TagOpen</span> <span class="dt">String</span> [<span class="dt">Attribute</span>]<br />         <span class="fu">|</span> <span class="dt">TagClose</span> <span class="dt">String</span><br />         <span class="fu">|</span> <span class="dt">TagText</span> <span class="dt">String</span><br />         <span class="fu">|</span> <span class="dt">TagComment</span> <span class="dt">String</span><br />         <span class="fu">|</span> <span class="dt">TagWarning</span> <span class="dt">String</span><br />         <span class="fu">|</span> <span class="dt">TagPosition</span> <span class="dt">Row</span> <span class="dt">Column</span></code></pre>
+<p>What do you think the constructors mean?</p>
+</div>
+
+<div class="slide">
+
+<h1>Pattern matching on a Tag</h1>
+<p>Suppose we want to write a predicate that will tell is if a <code>Tag</code> is an opening tag.</p>
+<ul>
+<li><p>What should the type of this function be?</p></li>
+<li><p>What should its body look like?</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Don't care!</h1>
+<p>Our first body looked like this:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">isOpenTag (<span class="dt">TagOpen</span> x y)     <span class="fu">=</span> <span class="kw">True</span><br />isOpenTag (<span class="dt">TagClose</span> x)      <span class="fu">=</span> <span class="kw">False</span><br />isOpenTag (<span class="dt">TagText</span> x)       <span class="fu">=</span> <span class="kw">False</span><br />isOpenTag (<span class="dt">TagComment</span> x)    <span class="fu">=</span> <span class="kw">False</span><br />isOpenTag (<span class="dt">TagWarning</span> x)    <span class="fu">=</span> <span class="kw">False</span><br />isOpenTag (<span class="dt">TagPosition</span> x y) <span class="fu">=</span> <span class="kw">False</span></code></pre>
+<p>Concise, but ugly.</p>
+<ul>
+<li><p>We really only care about one constructor.</p></li>
+<li><p>We never use the variables <code>x</code> or <code>y</code> that we declare.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>The wild card pattern</h1>
+<p>We can write &quot;I don't care what this pattern or variable is&quot; using the &quot;<code>_</code>&quot; character.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">isOpenTag (<span class="dt">TagOpen</span> _ _) <span class="fu">=</span> <span class="kw">True</span><br />isOpenTag  _            <span class="fu">=</span> <span class="kw">False</span></code></pre>
+<p>The wild card pattern always matches.</p>
+<ul>
+<li><p>Since we don't care about <code>x</code> or <code>y</code>, we can state that explicitly using <code>_</code>.</p></li>
+<li><p>Since we don't care about any constructor except <code>TagOpen</code>, we can match all the others using <code>_</code>.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Just a quick question</h1>
+<p>Why don't we write the function like this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell">isOpenTag  _            <span class="fu">=</span> <span class="kw">False</span><br />isOpenTag (<span class="dt">TagOpen</span> _ _) <span class="fu">=</span> <span class="kw">True</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Extracting links from a web page</h1>
+<p>Suppose we have a page in memory already.</p>
+<ul>
+<li><p>Browse the <code>tagsoup</code> docs, in the <code>Text.HTML.TagSoup</code> module.</p></li>
+<li><p>Find a function that will parse a web page into a series of tags.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Let's use it!</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span> (parseTags page)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Tidying tags up</h1>
+<p>Parsed tags can contain a mixture of tag names.</p>
+<pre><code>&lt;A HREF=&quot;...&quot;&gt;
+</code></pre>
+<pre><code>&lt;a hrEF=&quot;...&quot;&gt;
+</code></pre>
+<ul>
+<li>Find a <code>tagsoup</code> function that will turn tag names and attributes to lower case.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Canonical tags</h1>
+<p>Let's use our function to clean up the result of <code>parseTags</code>.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span><br />    (canonicalizeTags<br />      (parseTags page))</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Extracting links</h1>
+<p>We only care about open tags that are links, so <code>&lt;a&gt;</code> tags.</p>
+<ul>
+<li><p>How would we write the type of a function that will indicate whether a <code>Tag</code> is an open tag with the correct name?</p></li>
+<li><p>How would we use this function to extract only the open tags from a list of parsed tags?</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Whee!</h1>
+<p>This cascade is getting a bit ridiculous.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span><br />    (<span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>)<br />      (canonicalizeTags<br />        (parseTags page)))</code></pre>
+<p>Two observations:</p>
+<ul>
+<li><p>Our action is now mostly pure code.</p></li>
+<li><p>It sure looks like a pipeline.</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>A rewriting exercise</h1>
+<p>Take this function and split it into pure and impure parts.</p>
+<p>Write the pure part using function composition.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span><br />    (<span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>)<br />      (canonicalizeTags<br />        (parseTags page)))</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>My solution</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span> (process page)<br /><br />process <span class="fu">=</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags page</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>More stuff to filter out</h1>
+<p>Let's skip <code>nofollow</code> links.</p>
+<p>We want to get the <code>&quot;rel&quot;</code> attribute of a tag.</p>
+<ul>
+<li>Find a function that extracts an attribute from a tag.</li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>No following</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">nofollow tag <span class="fu">=</span> fromAttrib <span class="st">&quot;rel&quot;</span> tag <span class="fu">==</span> <span class="st">&quot;nofollow&quot;</span></code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell">process <span class="fu">=</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> nofollow) <span class="fu">.</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags page</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>We have a list of <a> tags</h1>
+<p>How would we extract the <code>&quot;href&quot;</code> attribute from every element of the list?</p>
+</div>
+
+<div class="slide">
+
+<h1>Only non-empty &lt;a href&gt; tags</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">process <span class="fu">=</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> <span class="fu">null</span>) <span class="fu">.</span><br />    <span class="fu">map</span> (fromAttrib <span class="st">&quot;href&quot;</span>) <span class="fu">.</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> nofollow) <span class="fu">.</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags page</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Canonical URLs</h1>
+<p>Links can be absolute, relative, or invalid garbage, and we only want valid-looking absolute links.</p>
+<p>To properly create an absolute link, we need to know the absolute URL of the page we're looking at.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">canonicalizeLink </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">String</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Working with URIs</h1>
+<p>The <code>Network.URI</code> package contains some functions we might find handy.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">parseURI </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">URI</span><br /><span class="ot">parseURIReference </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">URI</span><br />uriToString <span class="fu">id</span> <span class="st">&quot;&quot;</span><span class="ot"> </span><span class="ot">::</span> <span class="dt">URI</span> <span class="ot">-&gt;</span> <span class="dt">String</span><br /><span class="ot">nonStrictRelativeTo </span><span class="ot">::</span> <span class="dt">URI</span> <span class="ot">-&gt;</span> <span class="dt">URI</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">URI</span></code></pre>
+</div>
+
+<div class="slide">
+
+<h1>A monster of indentation</h1>
+<p>This is really hard to read!</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Network.URI</span><br /><br /><span class="ot">canon </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">String</span><br />canon referer path <span class="fu">=</span><br />  <span class="kw">case</span> parseURI referer <span class="kw">of</span><br />    <span class="kw">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">Nothing</span><br />    <span class="kw">Just</span> r  <span class="ot">-&gt;</span><br />      <span class="kw">case</span> parseURIReference path <span class="kw">of</span><br />        <span class="kw">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">Nothing</span><br />        <span class="kw">Just</span> p  <span class="ot">-&gt;</span><br />          <span class="kw">case</span> nonStrictRelativeTo p r <span class="kw">of</span><br />            <span class="kw">Nothing</span> <span class="ot">-&gt;</span> <span class="kw">Nothing</span><br />            <span class="kw">Just</span> u <span class="ot">-&gt;</span><br />             <span class="kw">Just</span> (uriToString <span class="fu">id</span> u <span class="st">&quot;&quot;</span>)</code></pre>
+<p>Surely there's a better way.</p>
+</div>
+
+<div class="slide">
+
+<h1>Stair stepping</h1>
+<p>Notice that that function was a series of <code>case</code> inspections of <code>Maybe</code> values?</p>
+<p>Suppose we had a function that accepted a normal value, and returned a <code>Maybe</code> value.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b</code></pre>
+<p>And suppose we had a concise syntax for writing an anonymous function.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">\a <span class="ot">-&gt;</span> <span class="st">&quot;hi mom! &quot;</span> <span class="fu">++</span> a</code></pre>
+<p>The <code>\</code> is pronounced &quot;lambda&quot;.</p>
+</div>
+
+<div class="slide">
+
+<h1>Observation</h1>
+<p>The <code>case</code> analysis is quite verbose. Suppose we had a function that performed it, and called another function if our value was <code>Just</code>.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">bind </span><span class="ot">::</span> <span class="dt">Maybe</span> a <span class="ot">-&gt;</span> (a <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b) <span class="ot">-&gt;</span> <span class="dt">Maybe</span> b<br />bind  <span class="kw">Nothing</span>      _     <span class="fu">=</span> <span class="kw">Nothing</span><br />bind (<span class="kw">Just</span> value) action <span class="fu">=</span> action value</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Using bind</h1>
+<p>How could we use this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell">canon1 referer path <span class="fu">=</span><br />  parseURI referer                <span class="ot">`bind`</span><br />   \r <span class="ot">-&gt;</span> parseURIReference path   <span class="ot">`bind`</span><br />    \p <span class="ot">-&gt;</span> nonStrictRelativeTo p r <span class="ot">`bind`</span><br />     \u <span class="ot">-&gt;</span> <span class="kw">Just</span> (uriToString <span class="fu">id</span> u <span class="st">&quot;&quot;</span>)</code></pre>
+<p>If we enclose a function name in backticks, we can use the function as an infix operator.</p>
+</div>
+
+<div class="slide">
+
+<h1>Reformatting the code</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">canon referer path <span class="fu">=</span><br />  parseURI referer         <span class="ot">`bind`</span> \r <span class="ot">-&gt;</span><br />  parseURIReference path   <span class="ot">`bind`</span> \p <span class="ot">-&gt;</span><br />  nonStrictRelativeTo p r  <span class="ot">`bind`</span> \u <span class="ot">-&gt;</span><br />  <span class="kw">Just</span> (uriToString <span class="fu">id</span> u <span class="st">&quot;&quot;</span>)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>A built-in name for bind</h1>
+<p>The <code>&gt;&gt;=</code> operator is a more general version of our <code>bind</code> function.</p>
+<pre class="sourceCode"><code class="sourceCode haskell">canon referer path <span class="fu">=</span><br />  parseURI referer <span class="fu">&gt;&gt;=</span> \r <span class="ot">-&gt;</span><br />  parseURIReference path <span class="fu">&gt;&gt;=</span> \p <span class="ot">-&gt;</span><br />  nonStrictRelativeTo p r <span class="fu">&gt;&gt;=</span> \u <span class="ot">-&gt;</span><br />  <span class="kw">Just</span> (uriToString <span class="fu">id</span> u <span class="st">&quot;&quot;</span>)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Using syntactic sugar</h1>
+<p>Here's some tidier syntax that should look familiar.</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">canonicalize </span><span class="ot">::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">String</span> <span class="ot">-&gt;</span> <span class="dt">Maybe</span> <span class="dt">String</span><br /><br />canonicalize referer path <span class="fu">=</span> <span class="kw">do</span><br />  r <span class="ot">&lt;-</span> parseURI referer<br />  p <span class="ot">&lt;-</span> parseURIReference path<br />  u <span class="ot">&lt;-</span> nonStrictRelativeTo p r<br />  <span class="fu">return</span> (uriToString <span class="fu">id</span> u <span class="st">&quot;&quot;</span>)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Nearly there</h1>
+<pre class="sourceCode"><code class="sourceCode haskell">process url <span class="fu">=</span><br />   <span class="fu">map</span> (canonicalize url) <span class="fu">.</span><br />   <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> <span class="fu">null</span>) <span class="fu">.</span><br />   <span class="fu">map</span> (fromAttrib <span class="st">&quot;href&quot;</span>) <span class="fu">.</span><br />   <span class="fu">filter</span> (\t <span class="ot">-&gt;</span> fromAttrib <span class="st">&quot;rel&quot;</span> t <span class="fu">/=</span> <span class="st">&quot;nofollow&quot;</span>) <span class="fu">.</span><br />   <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />   canonicalizeTags <span class="fu">.</span><br />   parseTags</code></pre>
+<p>One awkward thing: what is the type of this function?</p>
+</div>
+
+<div class="slide">
+
+<h1>From [Maybe a] to [a]</h1>
+<p>Go to this web site:</p>
+<ul>
+<li><a href="http://haskell.org/hoogle">haskell.org/hoogle</a></li>
+</ul>
+<p>Type this into the search box:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">[<span class="dt">Maybe</span> a] <span class="ot">-&gt;</span> [a]</code></pre>
+<p>What does the first result say?</p>
+</div>
+
+<div class="slide">
+
+<h1>We're there!</h1>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.Maybe</span><br /><span class="kw">import</span> <span class="dt">Network.URI</span><br /><br />links url <span class="fu">=</span><br />  catMaybes <span class="fu">.</span><br />  <span class="fu">map</span> (canonicalize url) <span class="fu">.</span><br />  <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> <span class="fu">null</span>) <span class="fu">.</span><br />  <span class="fu">map</span> (fromAttrib <span class="st">&quot;href&quot;</span>) <span class="fu">.</span><br />  <span class="fu">filter</span> (\t <span class="ot">-&gt;</span> fromAttrib <span class="st">&quot;rel&quot;</span> t <span class="fu">/=</span> <span class="st">&quot;nofollow&quot;</span>) <span class="fu">.</span><br />  <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />  canonicalizeTags <span class="fu">.</span><br />  parseTags</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>From links to spidering</h1>
+<p>If we can download the links from one page, we can easily write a spider to follow those links.</p>
+<p>To keep things simple, let's set a limit on the number of pages we'll download.</p>
+<p>What information do we want to generate?</p>
+<p>What do we need to track along the way?</p>
+</div>
+
+<div class="slide">
+
+<h1>What we need to track</h1>
+<p>Here's the state we need to maintain:</p>
+<ul>
+<li><p>The number of pages we have downloaded</p></li>
+<li><p>A collection of pages we have seen links to, but haven't downloaded</p></li>
+<li><p>A collection of pages and their outbound links</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Tracking what we've seen</h1>
+<p>For any given page, we need to remember both it and all the pages it links to.</p>
+<p>One possibility for associating the two is a <em>tuple</em>:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">(<span class="st">&quot;http://x.org/&quot;</span>, [<span class="st">&quot;http://microsoft.com/&quot;</span>])</code></pre>
+<p>Tuples are useful any time we want mixed-type data without the hassle of creating a new type.</p>
+<p>Speaking of a new type, here's how we'd define one:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">Link</span> <span class="fu">=</span> <span class="dt">Link</span> <span class="dt">String</span> [<span class="dt">String</span>]<br /><br /><span class="co">-- Let's define some accessors, too.</span><br />linkFrom (<span class="dt">Link</span> url _) <span class="fu">=</span> url<br />linkTo (<span class="dt">Link</span> _ links) <span class="fu">=</span> links</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Avoiding duplication</h1>
+<p>We don't want to visit any URL twice.</p>
+<p>How do we avoid this?</p>
+<pre class="sourceCode"><code class="sourceCode haskell">visited url <span class="fu">=</span> <span class="fu">elem</span> url <span class="fu">.</span> <span class="fu">map</span> linkTo</code></pre>
+<p>This function has a problem - what is that problem?</p>
+</div>
+
+<div class="slide">
+
+<h1>Better performance</h1>
+<p>We really want a structure with a fast lookup operation.</p>
+<p>What would you use in your language?</p>
+</div>
+
+<div class="slide">
+
+<h1>Maps and importing</h1>
+<p>In Haskell, we have mutable hash tables, but we don't use them.</p>
+<p>Instead, we use <em>immutable</em> key-value maps.</p>
+<p>We must perform fancy module importing tricks because the <code>Data.Map</code> module defines a lot of names that would otherwise overlap with built-in names.</p>
+<p>This means &quot;only import the name <code>Map</code> from <code>Data.Map</code>&quot;:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.Map</span> (<span class="dt">Map</span>)</code></pre>
+<p>And this means &quot;import everything from <code>Data.Map</code>, but all those names must be prefixed with <code>Map.</code>&quot;:</p>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.Map</span> (<span class="dt">Map</span>)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>What use is an immutable data structure?</h1>
+<p>Everyone knows how to add a key and value to a hash table, right?</p>
+<p>And that seems like a fundamental operation.</p>
+<p>What do we do with maps?</p>
+<ul>
+<li>Create a <em>new</em> map that is identical to the one we supply, with the requested element added.</li>
+</ul>
+<p>How can this possibly work? Is it efficient?</p>
+</div>
+
+<div class="slide">
+
+<h1>A fistful of dollars</h1>
+<p>Here's a surprisingly handy built-in operator:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">f <span class="fu">$</span> x <span class="fu">=</span> f x</code></pre>
+<p>Why is this useful? Because it lets us eliminate parentheses.</p>
+<p>Before:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">explode k <span class="fu">=</span> <span class="fu">error</span> (<span class="st">&quot;failed on &quot;</span> <span class="fu">++</span> <span class="fu">show</span> k)</code></pre>
+<p>After:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">explode k <span class="fu">=</span> <span class="fu">error</span> <span class="fu">$</span> <span class="st">&quot;failed on &quot;</span> <span class="fu">++</span> <span class="fu">show</span> k</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Partial application</h1>
+<p>This is annoying to write:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">increment k <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> k</code></pre>
+<p>Almost as bad:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">\k <span class="ot">-&gt;</span> <span class="dv">1</span> <span class="fu">+</span> k</code></pre>
+<p>Much handier, and identical:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">(<span class="dv">1</span><span class="fu">+</span>)</code></pre>
+<p>In fact, this is valid:</p>
+<pre class="sourceCode"><code class="sourceCode haskell">increment <span class="fu">=</span> (<span class="dv">1</span><span class="fu">+</span>)</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Spidering, in all its glory</h1>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="ot">spider </span><span class="ot">::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">URL</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> (<span class="dt">Map</span> <span class="dt">URL</span> [<span class="dt">URL</span>])<br />spider count url0 <span class="fu">=</span> go <span class="dv">0</span> Map.empty (Set.singleton url0)<br />  <span class="kw">where</span><br />    go k seen queue0<br />        <span class="fu">|</span> k <span class="fu">&gt;=</span> count <span class="fu">=</span> <span class="fu">return</span> seen<br />        <span class="fu">|</span> <span class="fu">otherwise</span>  <span class="fu">=</span><br />      <span class="kw">case</span> Set.minView queue0 <span class="kw">of</span><br />        <span class="kw">Nothing</span> <span class="ot">-&gt;</span> <span class="fu">return</span> seen<br />        <span class="kw">Just</span> (url, queue) <span class="ot">-&gt;</span> <span class="kw">do</span><br />          page <span class="ot">&lt;-</span> download url<br />          <span class="kw">let</span> ls       <span class="fu">=</span> links url page<br />              newSeen  <span class="fu">=</span> Map.insert url ls seen<br />              notSeen  <span class="fu">=</span> Set.fromList <span class="fu">.</span><br />                         <span class="fu">filter</span> (<span class="ot">`Map.notMember`</span> newSeen) <span class="fu">$</span> ls<br />              newQueue <span class="fu">=</span> queue <span class="ot">`Set.union`</span> notSeen<br />          go (k<span class="fu">+</span><span class="dv">1</span>) newSeen newQueue</code></pre>
+</div>
+
+<div class="slide">
+
+<h1>Where do we stand?</h1>
+<p>We can now:</p>
+<ul>
+<li><p>Download a web page</p></li>
+<li><p>Extract its links</p></li>
+<li><p>Spider out from there, without repeat visits</p></li>
+</ul>
+<p>What remains?</p>
+<ul>
+<li><p>We could spider multiple pages concurrently</p></li>
+<li><p>Or we could compute which pages are &quot;important&quot;</p></li>
+</ul>
+</div>
+
+<div class="slide">
+
+<h1>Fin</h1>
+<p>At this point, if we have miraculously not run out of time, we're going on a choose-your-own-adventure session in Emacs.</p>
+<p>Thanks for sticking with the slideshow so far!</p>
+</div>
+</body>
+</html>
