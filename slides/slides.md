@@ -2019,7 +2019,7 @@ And this means "import everything from `Data.Map`, but all those names
 must be prefixed with `Map.`":
 
 ~~~~ {.haskell}
-import Data.Map (Map)
+import qualified Data.Map as Map
 ~~~~
 
 
