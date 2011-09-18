@@ -19,4 +19,5 @@ canonicalizeLink referer path = do
   r <- parseURI referer
   p <- parseURIReference path
   n <- p `nonStrictRelativeTo` r
-  return (uriToString id n "")
+  let u = uriToString id n ""
+  return (takeWhile (/= '#') u)

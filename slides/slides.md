@@ -49,6 +49,7 @@ main = putStrLn "hello!"
 
 * I'm going to teach you *interesting* things, but not *everything*
 
+
 # What to expect 2
 
 * This is a *hands-on* workshop: you'll be writing code!
@@ -80,6 +81,23 @@ main = putStrLn "hello!"
 * A text editor
 
 * A terminal window
+
+
+# Problem definition
+
+Given a web site, we want to scrape it and find important web pages.
+
+This involves a lot of figuring stuff out!
+
+1. Learn Haskell
+
+1. Download one web page
+
+1. Extract links from a page, so we can find more pages to download
+
+1. Once we're done, compute which ones are important
+
+1. Make it all fast?
 
 
 # Let's get started!
@@ -519,9 +537,11 @@ Right on.
 
 # Why do we care about constructors?
 
-So of course Haskell has to remember what a list is constructed of,
-but it also lets *us* inspect a list, to see which constructors were
-used.  How do we do this?
+Of course Haskell has to remember what a list is constructed of.
+
+It also lets *us* inspect a list, to see which constructors were used.
+
+How do we do this?
 
 ~~~~ {.haskell}
 import Data.Char
@@ -548,7 +568,7 @@ isCapitalized name
 * In between `case` and `of` is the expression we are inspecting.
 
 * If the constructor used was the empty-list constructor `[]`, then
-  clearly the `name` is not capitalized.
+  clearly the `name` we're inspecting is empty, hence not capitalized.
 
 If the constructor used was the "add to the front" `:` operator,
 then things get more interesting.
@@ -756,6 +776,7 @@ How to use this?
 countLowerCase = length . filter isLower
 ~~~~
 
+
 # Understanding composition
 
 If that seemed hard to follow, let's make it clearer.
@@ -775,19 +796,93 @@ as the second:
 ~~~~
 
 
-# Problem definition
+# Local variables
+
+Inside an expression, we can introduce new variables using `let`.
+
+~~~~ {.haskell}
+let x = 2
+    y = 4
+in x + y
+~~~~
+
+* Local definitions come after the `let`.
+
+* The expression where we use them comes after the `in`.
+
+
+# White space
+
+Haskell is sensitive to white space!
+
+* A top-level definition starts in the leftmost column.
+
+* After the beginning of a definition, if the next non-empty line is
+  indented further, it is treated as a continuation of that
+  definition.
+
+* Never use tabs in your source files.
+
+
+# White space and local variables
+
+If you're defining local variables, they must start in the same
+column.
+
+This is good:
+
+~~~~ {.haskell}
+let x = 2
+    y = 4
+in x + y
+~~~~
+
+But this will lead to a compiler error:
+
+~~~~ {.haskell}
+let x = 2
+      y = 4
+in x + y
+~~~~
+
+
+# Composition exercise
+
+Using function composition wherever you can, write a function that
+accepts a string and returns a new string containing only the words
+that begin with vowels.
+
+* You'll want to play with the `words` and `unwords` functions before
+  you start.
+
+Example:
+
+~~~~ {.haskell}
+disemvowel "I think, therefore I am."
+  == "I I am."
+~~~~
+
+
+# My solution
+
+Here's how I wrote `disemvowel`:
+
+~~~~ {.haskell}
+disemvowel = 
+  let isVowel c = toLower c `elem` "aeiou"
+  in  unwords . filter (isVowel . head) . words
+~~~~
+
+Does this remind you of a Unix shell pipeline, only right-to-left?
+
+
+# Problem definition, once again
 
 Given a web site, we want to scrape it and find important web pages.
 
-This involves a lot of figuring stuff out!
+We're now Haskell experts, right?
 
 * Download one web page
-
-* Extract links from a page, so we can find more pages to download
-
-* Once we're done, compute which ones are important
-
-* Make it all fast?
 
 
 # Let's download a web page!
@@ -795,7 +890,7 @@ This involves a lot of figuring stuff out!
 We'd really like to rely on a library to download a web page for
 us.
 
-For stuff like this, there's a very handy central repository of open
+At times like this, there's a very handy central repository of open
 source Haskell software:
 
 * [http://hackage.haskell.org](http://hackage.haskell.org/)
@@ -816,8 +911,8 @@ Are we patient?
 
 # Ugh!
 
-We don't want to look through thousands of libraries - surely there's
-a better way?
+Scrolling through thousands of libraries is hard - surely there's a
+better way?
 
 Enter the `cabal` command!
 
@@ -845,7 +940,7 @@ The best HTTP client library is named `http-enumerator`.
 
 We can read about it online:
 
-* [http://hackage.haskell.org/package/http-enumerator](http://hackage.haskell.org/package/http-enumerator)
+* [hackage.haskell.org/package/http-enumerator](http://hackage.haskell.org/package/http-enumerator)
 
 That landing page for a package is intimidating, but look towards the
 bottom, at the section labeled "Modules".
@@ -854,6 +949,8 @@ What do you see?
 
 
 # Installing a package
+
+Before we can use `http-enumerator`, we must install it.
 
 To install the `http-enumerator` package, we just issue a single
 command:
@@ -885,17 +982,17 @@ Network.HTTP.Enumerator
 
 This is the name of a *module*.
 
-A module is a collection of code.
+A module is a collection of related code.
 
-A *package* is a collection of modules.
+A *package* is a collection of related modules.
 
 (This will sound familiar if you know Python.)
 
 
 # Reading docs: the rest
 
-After the initial blurb, a module's docs consist of type signatures and
-descriptions.
+After the initial blurb, a module's docs consists of type signatures
+and descriptions.
 
 Here is a really simple type signature:
 
@@ -913,6 +1010,28 @@ Its *type* follows after the `::`.
 This means "the value named `foo` has the type `String`".
 
 
+# Haskell's type system
+
+Up until now, we have not bothered talking about types or type
+signatures.
+
+Every expression and value in Haskell has a single type.
+
+Those types can almost always be *inferred* automatically by the
+compiler or interpreter.
+
+
+# The most common basic types
+
+* `Bool`
+
+* `Int`
+
+* `Char`
+
+* `Double`
+
+
 # A function signature
 
 Here's another type signature:
@@ -927,8 +1046,8 @@ The type after the last `->` is the return type of the function.
 
 All of its predecessors are argument types.
 
-So this is a function that takes one `String` argument, and which
-returns ... what?
+So this is a function that takes one `String` argument, and
+returns... what?
 
 
 # List notation
@@ -936,6 +1055,23 @@ returns ... what?
 The notation `[a]` means "a list of values, all of some type `a`".
 
 So `[String]` means "a list of values, all of type `String`".
+
+
+# Type synonyms
+
+What's a `String`? 
+
+* It's not special, just a *synonym* for `[Char]`, i.e. "a list of
+  `Char`".
+  
+We can introduce new synonyms of our own.
+
+~~~~ {.haskell}
+type Dollars = Int
+~~~~
+
+A type synonym can be handy for documenting an intended use for an
+existing type.
 
 
 # Words
@@ -956,8 +1092,10 @@ might do?
 Tell me about this signature:
 
 ~~~~
-unwords :: [String] -> String
+mystery :: [String] -> String
 ~~~~
+
+What are some reasonable possible behaviours for this function?
 
 
 # Reading real-world docs
@@ -975,9 +1113,25 @@ This is more complex! How the heck do we read it?
 The bits between `::` and '=>' are *constraints* on where we can use
 `simpleHttp` - but let's ignore constraints for now.
 
+* *Important*: it's often safe to gloss over things we don't (yet)
+  understand.
+
 We'll also ignore that mysterious lowercase `m` for a bit.
 
 What can we tell about this function?
+
+
+# ByteString
+
+A `ByteString` is a blob of binary data.
+
+Unlike `String`, it is not represented as a list, but as a packed
+array.
+
+However, it contains binary *bytes*, not text!
+
+* Don't use `ByteString` for working with data that you have to
+  manipulate as text.
 
 
 # Let's play in ghci!
@@ -1015,6 +1169,8 @@ And here's how we initialize Winsock:
 withSocketsDo (return ())
 ~~~~
 
+(It's harmless to do this on Unix.)
+
 
 # With that out of the way ...
 
@@ -1025,3 +1181,778 @@ simpleHttp "http://example.com/"
 ~~~~
 
 Did that just print a ton of HTML in the terminal window?  All right!
+
+
+# From binary to text
+
+Now we have a `ByteString`, which we need to turn into text for
+manipulating.
+
+Let's cheat, and assume that all web pages are encoded in UTF-8.
+
+
+# Pure code
+
+So far, all of the code we have written has been "pure".
+
+* The behaviour of all of our functions has depended only on their
+  inputs.
+  
+* All of our data is immutable.
+
+* There's thus no way to change a global variable and modify the
+  behaviour of a function.
+  
+
+# Impure code
+
+And yet ... somehow we downloaded a web page!
+
+* Web pages clearly are *not* pure.
+
+So can we write code like this?
+
+~~~~ {.haskell}
+length (simpleHttp "http://x.org/")
+~~~~
+
+NO.
+
+The type system segregates code that must be pure from code that may
+have side effects ("impure" code).
+
+
+# Are we stuck?
+
+Well, let's look at a simpler example than `simpleHttp`.
+
+Type this in `ghci`:
+
+~~~~
+:type readFile
+~~~~
+
+This will tell us what the type of `readFile` is.
+
+
+# IO
+
+The `:type` directive should print something like this:
+
+~~~~ {.haskell}
+readFile :: FilePath -> IO String
+~~~~
+
+Notice that `IO` on the result type? 
+
+It means "this function may have side effects".
+
+We often refer to impure functions, with `IO` in the result type, as
+*actions*.
+
+* This helps to distinguish them from pure functions.
+
+
+# Mixing IO and other stuff
+
+The type system keeps track of which functions have `IO` in their
+types, and keeps us honest.
+
+We can still mix pure and impure code in a natural way:
+
+~~~~ {.haskell}
+charCount fileName = do
+  contents <- readFile fileName
+  return (length contents)
+~~~~
+
+
+# "do" notation
+
+Critical to what we just saw was the `do` keyword at the beginning of
+the function definition.
+
+This introduces a series of `IO` actions, one per line.
+
+
+# Capturing the results of impure code
+
+
+To capture the result of an `IO` action, we use `<-` instead of `=`.
+
+~~~~ {.haskell}
+contents <- readFile fileName
+~~~~
+
+The result (`contents`) is pure - it *does not have* the `IO` type.
+
+This is how we supply pure code with data returned from impure code.
+
+
+# The "return" action
+
+This is *not* the `return` type you're used to!
+
+It takes a *pure* value (without `IO` in its type), and *wraps* it
+with the `IO` type.
+
+Pure code can't call impure code, but it can thread data back into the
+impure world using `return`.
+
+
+# Haskell programs and IO
+
+When you write a Haskell program, its entry point must be named
+`main`.
+
+The type of `main` must be:
+
+~~~~ {.haskell}
+main :: IO ()
+~~~~
+
+`()` is named "unit", and means more or less the same thing as `void`
+in C or Java.
+
+What this means is that *all* Haskell programs are impure!
+
+
+# Binary to text
+
+Remember we were planning to cheat earlier?
+
+We had this:
+
+~~~~ {.haskell}
+simpleHttp :: String -> IO ByteString
+~~~~
+
+We need something whose result is an `IO String` instead.
+
+How should that look?
+
+
+# UTF-8 conversion
+
+To do the conversion, let's grab a package named `utf8-string`.
+
+~~~~
+cabal install utf8-string
+~~~~
+
+That contains a package named `Data.ByteString.Lazy.UTF8`.
+
+~~~~ {.haskell}
+import Data.ByteString.Lazy.UTF8
+~~~~
+
+It defines a function named `toString`:
+
+~~~~ {.haskell}
+toString :: ByteString -> String
+~~~~
+
+
+# UTF-8 conversion exercise
+
+Write an action that downloads a URL and converts it from a
+`ByteString` to a `String` using `toString`.
+
+Write a type signature for the action.
+
+* Haskell definitions usually don't require type signatures.
+
+* Nevertheless, we write them for *documentation* on almost all
+  top-level definitions.
+
+
+# Downloading and saving a web page
+
+Use your `download` function to save a local copy of the page you just
+wrote.
+
+~~~~ {.haskell}
+saveAs :: String -> Int -> IO ()
+~~~~
+
+For simplicity, let's save the local files as names containing
+numbers:
+
+~~~~ {.haskell}
+makeFileName :: Int -> FilePath
+makeFileName k = "download-" ++ show k ++ ".html"
+~~~~
+
+To save a local copy of a file, you'll need the `writeFile` action.
+
+
+# Shoveling through HTML
+
+Two truisms:
+
+* Most HTML in the wild is a mess.
+
+* Even parsing well formed HTML is complicated.
+
+So! Let's use another library.
+
+~~~~
+cabal install tagsoup
+~~~~
+
+The `tagsoup` package can parse arbitrarily messy HTML.
+
+It will feed us a list of events, like a SAX parser.
+
+
+# Dealing with problems
+
+Try this:
+
+~~~~ {.haskell}
+head [1]
+~~~~
+
+Now try this:
+
+~~~~ {.haskell}
+head []
+~~~~
+
+
+# Oops
+
+If we pass an empty list, the `head` function throws an exception.
+
+Suppose we need a version of `head` that will *not* throw an
+exception.
+
+~~~~ {.haskell}
+safeHead :: [a] -> ????
+~~~~
+
+What should the `????` be?
+
+Let's invent something.
+
+~~~~ {.haskell}
+safeHead (x:xs) = Some x
+safeHead []     = None
+~~~~
+
+
+# Some? None?
+
+* We're using a constructor named `Some` to capture the idea "we have
+  a result".
+  
+* The constructor `None` indicates "we don't have a result here".
+
+To bring these constructors into existence, we need to declare a new
+type.
+
+~~~~ {.haskell}
+data Perhaps a = Some a
+               | None
+~~~~
+
+The `|` character separates the constructors. We can read it as:
+
+* The `Perhaps` type has two constructors:
+
+* `Some` followed by a single argument
+
+* or `None` with no arguments
+
+
+# Maybe
+
+Actually, Haskell already has a `Perhaps` type.
+
+~~~~ {.haskell}
+data Maybe a = Just a
+             | Nothing
+~~~~
+
+The `a` is a *type parameter*, meaning that when we write this type,
+we have to supply another type as a parameter:
+
+* `Maybe Int`
+
+* `Maybe String`
+
+
+# Using constructors
+
+If we want to construct a `Maybe Int` using the `Just` constructor, we
+must pass it an `Int`.
+
+~~~~ {.haskell}
+Just 1  :: Maybe Int
+Nothing :: Maybe Int
+~~~~
+
+This will not work, because the types don't match:
+
+~~~~ {.haskell}
+Just [1] :: Maybe String
+~~~~
+
+
+# Pattern matching over constructors
+
+We can pattern match over the constructors for `Maybe` just as we did
+for lists.
+
+~~~~ {.haskell}
+case foo of
+  Just x  -> x
+  Nothing -> bar
+~~~~
+
+
+# Tags
+
+The `tagsoup` package defines the following type:
+
+~~~~ {.haskell}
+data Tag = TagOpen String [Attribute]
+         | TagClose String
+         | TagText String
+         | TagComment String
+         | TagWarning String
+         | TagPosition Row Column
+~~~~
+
+What do you think the constructors mean?
+
+
+# Pattern matching on a Tag
+
+Suppose we want to write a predicate that will tell is if a `Tag` is
+an opening tag.
+
+* What should the type of this function be?
+
+* What should its body look like?
+
+
+# Don't care!
+
+Our first body looked like this:
+
+~~~~ {.haskell}
+isOpenTag (TagOpen x y)     = True
+isOpenTag (TagClose x)      = False
+isOpenTag (TagText x)       = False
+isOpenTag (TagComment x)    = False
+isOpenTag (TagWarning x)    = False
+isOpenTag (TagPosition x y) = False
+~~~~
+
+Concise, but ugly. 
+
+* We really only care about one constructor.
+
+* We never use the variables `x` or `y` that we declare.
+
+
+# The wild card pattern
+
+We can write "I don't care what this pattern or variable is" using the
+"`_`" character.
+
+~~~~ {.haskell}
+isOpenTag (TagOpen _ _) = True
+isOpenTag  _            = False
+~~~~
+
+The wild card pattern always matches.
+
+* Since we don't care about `x` or `y`, we can state that explicitly
+  using `_`.
+  
+* Since we don't care about any constructor except `TagOpen`, we can
+  match all the others using `_`.
+  
+
+# Just a quick question
+
+Why don't we write the function like this?
+
+~~~~ {.haskell}
+isOpenTag  _            = False
+isOpenTag (TagOpen _ _) = True
+~~~~
+
+
+# Extracting links from a web page
+
+Suppose we have a page in memory already.
+
+* Browse the `tagsoup` docs, in the `Text.HTML.TagSoup` module.
+
+* Find a function that will parse a web page into a series of tags.
+
+
+# Let's use it!
+
+~~~~ {.haskell}
+processPage url = do
+  page <- download url
+  return (parseTags page)
+~~~~
+
+
+# Tidying tags up
+
+Parsed tags can contain a mixture of tag names.
+
+~~~~
+<A HREF="...">
+~~~~
+
+~~~~
+<a hrEF="...">
+~~~~
+
+* Find a `tagsoup` function that will turn tag names and attributes to
+  lower case.
+  
+
+# Canonical tags
+
+Let's use our function to clean up the result of `parseTags`.
+
+~~~~ {.haskell}
+processPage url = do
+  page <- download url
+  return
+    (canonicalizeTags
+      (parseTags page))
+~~~~
+
+
+# Extracting links
+
+We only care about open tags that are links, so `<a>` tags.
+
+* How would we write the type of a function that will indicate whether
+  a `Tag` is an open tag with the correct name?
+
+* How would we use this function to extract only the open tags from a
+  list of parsed tags?
+  
+  
+# Whee!
+
+This cascade is getting a bit ridiculous.
+
+~~~~ {.haskell}
+processPage url = do
+  page <- download url
+  return
+    (filter (isTagOpenName "a")
+      (canonicalizeTags
+        (parseTags page)))
+~~~~
+
+Two observations:
+
+* Our action is now mostly pure code.
+
+* It sure looks like a pipeline.
+
+
+# A rewriting exercise
+
+Take this function and split it into pure and impure parts.
+
+Write the pure part using function composition.
+
+~~~~ {.haskell}
+processPage url = do
+  page <- download url
+  return
+    (filter (isTagOpenName "a")
+      (canonicalizeTags
+        (parseTags page)))
+~~~~
+
+
+# My solution
+
+~~~~ {.haskell}
+processPage url = do
+  page <- download url
+  return (process page)
+
+process =
+    filter (isTagOpenName "a") .
+    canonicalizeTags .
+    parseTags page
+~~~~
+
+
+# More stuff to filter out
+
+Let's skip `nofollow` links.
+
+We want to get the `"rel"` attribute of a tag.
+
+* Find a function that extracts an attribute from a tag.
+
+
+# No following
+
+~~~~ {.haskell}
+nofollow tag = fromAttrib "rel" tag == "nofollow"
+~~~~
+
+~~~ {.haskell}
+process =
+    filter (not . nofollow) .
+    filter (isTagOpenName "a") .
+    canonicalizeTags .
+    parseTags page
+~~~~
+
+
+# We have a list of <a> tags
+
+How would we extract the `"href"` attribute from every element of the
+list?
+
+
+# Only non-empty \<a href\> tags
+
+~~~~ {.haskell}
+process =
+    filter (not . null) .
+    map (fromAttrib "href") .
+    filter (not . nofollow) .
+    filter (isTagOpenName "a") .
+    canonicalizeTags .
+    parseTags page
+~~~~
+
+
+# Canonical URLs
+
+Links can be absolute, relative, or invalid garbage, and we only want
+valid-looking absolute links.
+
+To properly create an absolute link, we need to know the absolute URL
+of the page we're looking at.
+
+~~~~ {.haskell}
+canonicalizeLink :: String -> String -> Maybe String
+~~~~
+
+
+# Working with URIs
+
+The `Network.URI` package contains some functions we might find handy.
+
+~~~~ {.haskell}
+parseURI :: String -> Maybe URI
+parseURIReference :: String -> Maybe URI
+uriToString id "" :: URI -> String
+nonStrictRelativeTo :: URI -> URI -> Maybe URI
+~~~~
+
+
+# A monster of indentation
+
+This is really hard to read!
+
+~~~~ {.haskell}
+import Network.URI
+
+canon :: String -> String -> Maybe String
+canon referer path =
+  case parseURI referer of
+    Nothing -> Nothing
+    Just r  ->
+      case parseURIReference path of
+        Nothing -> Nothing
+        Just p  ->
+          case nonStrictRelativeTo p r of
+            Nothing -> Nothing
+            Just u ->
+             Just (uriToString id u "")
+~~~~
+
+Surely there's a better way.
+
+
+# Stair stepping
+
+Notice that that function was a series of `case` inspections of
+`Maybe` values?
+
+Suppose we had a function that accepted a normal value, and returned a
+`Maybe` value.
+
+~~~~ {.haskell}
+a -> Maybe b
+~~~~
+
+And suppose we had a concise syntax for writing an anonymous function.
+
+~~~~ {.haskell}
+\a -> "hi mom! " ++ a
+~~~~
+
+The `\` is pronounced "lambda".
+
+
+# Observation
+
+The `case` analysis is quite verbose. Suppose we had a function that
+performed it, and called another function if our value was `Just`.
+
+~~~~ {.haskell}
+bind :: Maybe a -> (a -> Maybe b) -> Maybe b
+bind  Nothing      _     = Nothing
+bind (Just value) action = action value
+~~~~
+
+
+# Using bind
+
+How could we use this?
+
+~~~~ {.haskell}
+canon1 referer path =
+  parseURI referer                `bind`
+   \r -> parseURIReference path   `bind`
+    \p -> nonStrictRelativeTo p r `bind`
+     \u -> Just (uriToString id u "")
+~~~~
+
+If we enclose a function name in backticks, we can use the function as
+an infix operator.
+
+
+# Reformatting the code
+
+~~~~ {.haskell}
+canon referer path =
+  parseURI referer         `bind` \r ->
+  parseURIReference path   `bind` \p ->
+  nonStrictRelativeTo p r  `bind` \u ->
+  Just (uriToString id u "")
+~~~~
+
+
+# A built-in name for bind
+
+The `>>=` operator is a more general version of our `bind` function.
+
+~~~~ {.haskell}
+canon referer path =
+  parseURI referer >>= \r ->
+  parseURIReference path >>= \p ->
+  nonStrictRelativeTo p r >>= \u ->
+  Just (uriToString id u "")
+~~~~
+
+
+# Using syntactic sugar
+
+Here's some tidier syntax that should look familiar.
+
+~~~~ {.haskell}
+canonicalize :: String -> String -> Maybe String
+
+canonicalize referer path = do
+  r <- parseURI referer
+  p <- parseURIReference path
+  u <- nonStrictRelativeTo p r
+  return (uriToString id u "")
+~~~~
+
+
+# Nearly there
+
+~~~~ {.haskell}
+process url =
+   map (canonicalize url) .
+   filter (not . null) .
+   map (fromAttrib "href") .
+   filter (\t -> fromAttrib "rel" t /= "nofollow") .
+   filter (isTagOpenName "a") .
+   canonicalizeTags .
+   parseTags
+~~~~
+
+One awkward thing: what is the type of this function?
+
+
+# From [Maybe a] to [a]
+
+Go to this web site:
+
+* [haskell.org/hoogle](http://haskell.org/hoogle)
+
+Type this into the search box:
+
+~~~~ {.haskell}
+[Maybe a] -> [a]
+~~~~
+
+What does the first result say?
+
+
+# We're there!
+
+~~~~ {.haskell}
+import Data.Maybe
+import Network.URI
+
+links url =
+  catMaybes .
+  map (canonicalize url) .
+  filter (not . null) .
+  map (fromAttrib "href") .
+  filter (\t -> fromAttrib "rel" t /= "nofollow") .
+  filter (isTagOpenName "a") .
+  canonicalizeTags .
+  parseTags
+~~~~
+
+
+# From links to spidering
+
+If we can download the links from one page, we can easily write a
+spider to follow those links.
+
+To keep things simple, let's set a limit on the number of pages we'll
+download.
+
+What information do we want to generate?
+
+What do we need to track along the way?
+
+
+# What we need to track
+
+Here's the state we need to maintain:
+
+* The number of pages we have downloaded
+
+* A collection of pages we have seen links to, but haven't downloaded
+
+* A collection of pages and their outbound links
+
+
+# Where do we stand?
+
+We can now download and extract the links from a page.
+
+What's next?
+
+* Compute which ones are important
+
+
