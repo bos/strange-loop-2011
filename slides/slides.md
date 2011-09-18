@@ -1697,7 +1697,7 @@ processPage url = do
 process =
     filter (isTagOpenName "a") .
     canonicalizeTags .
-    parseTags page
+    parseTags
 ~~~~
 
 
@@ -1721,7 +1721,7 @@ process =
     filter (not . nofollow) .
     filter (isTagOpenName "a") .
     canonicalizeTags .
-    parseTags page
+    parseTags
 ~~~~
 
 
@@ -1740,7 +1740,7 @@ process =
     filter (not . nofollow) .
     filter (isTagOpenName "a") .
     canonicalizeTags .
-    parseTags page
+    parseTags
 ~~~~
 
 
