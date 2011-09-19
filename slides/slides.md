@@ -1697,7 +1697,7 @@ processPage url = do
 process =
     filter (isTagOpenName "a") .
     canonicalizeTags .
-    parseTags page
+    parseTags
 ~~~~
 
 
