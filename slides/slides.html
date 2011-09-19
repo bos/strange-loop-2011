@@ -1227,7 +1227,7 @@ Bryan O'Sullivan
 <div class="slide">
 
 <h1>My solution</h1>
-<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span> (process page)<br /><br />process <span class="fu">=</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags page</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell">processPage url <span class="fu">=</span> <span class="kw">do</span><br />  page <span class="ot">&lt;-</span> download url<br />  <span class="fu">return</span> (process page)<br /><br />process <span class="fu">=</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags</code></pre>
 </div>
 
 <div class="slide">
@@ -1244,19 +1244,19 @@ Bryan O'Sullivan
 
 <h1>No following</h1>
 <pre class="sourceCode"><code class="sourceCode haskell">nofollow tag <span class="fu">=</span> fromAttrib <span class="st">&quot;rel&quot;</span> tag <span class="fu">==</span> <span class="st">&quot;nofollow&quot;</span></code></pre>
-<pre class="sourceCode"><code class="sourceCode haskell">process <span class="fu">=</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> nofollow) <span class="fu">.</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags page</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell">process <span class="fu">=</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> nofollow) <span class="fu">.</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags</code></pre>
 </div>
 
 <div class="slide">
 
-<h1>We have a list of <a> tags</h1>
+<h1>We have a list of &lt;a&gt; tags</h1>
 <p>How would we extract the <code>&quot;href&quot;</code> attribute from every element of the list?</p>
 </div>
 
 <div class="slide">
 
 <h1>Only non-empty &lt;a href&gt; tags</h1>
-<pre class="sourceCode"><code class="sourceCode haskell">process <span class="fu">=</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> <span class="fu">null</span>) <span class="fu">.</span><br />    <span class="fu">map</span> (fromAttrib <span class="st">&quot;href&quot;</span>) <span class="fu">.</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> nofollow) <span class="fu">.</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags page</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell">process <span class="fu">=</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> <span class="fu">null</span>) <span class="fu">.</span><br />    <span class="fu">map</span> (fromAttrib <span class="st">&quot;href&quot;</span>) <span class="fu">.</span><br />    <span class="fu">filter</span> (<span class="fu">not</span> <span class="fu">.</span> nofollow) <span class="fu">.</span><br />    <span class="fu">filter</span> (isTagOpenName <span class="st">&quot;a&quot;</span>) <span class="fu">.</span><br />    canonicalizeTags <span class="fu">.</span><br />    parseTags</code></pre>
 </div>
 
 <div class="slide">
@@ -1409,7 +1409,7 @@ Bryan O'Sullivan
 <p>This means &quot;only import the name <code>Map</code> from <code>Data.Map</code>&quot;:</p>
 <pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.Map</span> (<span class="dt">Map</span>)</code></pre>
 <p>And this means &quot;import everything from <code>Data.Map</code>, but all those names must be prefixed with <code>Map.</code>&quot;:</p>
-<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="dt">Data.Map</span> (<span class="dt">Map</span>)</code></pre>
+<pre class="sourceCode"><code class="sourceCode haskell"><span class="kw">import</span> <span class="kw">qualified</span> <span class="dt">Data.Map</span> <span class="kw">as</span> <span class="dt">Map</span></code></pre>
 </div>
 
 <div class="slide">
