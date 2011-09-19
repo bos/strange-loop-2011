@@ -1725,7 +1725,7 @@ process =
 ~~~~
 
 
-# We have a list of <a> tags
+# We have a list of \<a> tags
 
 How would we extract the `"href"` attribute from every element of the
 list?
