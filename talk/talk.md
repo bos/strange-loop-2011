@@ -241,14 +241,16 @@ Wrote our own bindings:
 
 # Our experience with Riak
 
-Our bindings are sleek and solid, and Riak works well, but it had two
-fatal shortcomings:
+Our bindings are sleek and solid, and Riak works well, but for our
+needs, it had two tough shortcomings:
 
 * At the time, no secondary indices for data
 
 * Vector clocks are like having a smoke alarm but no fire extinguisher
 
 So we dropped it.
+
+(Hoping to use it again at some point.)
 
 
 # From Riak to ...
