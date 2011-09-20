@@ -1,6 +1,11 @@
 % Running a startup on Haskell
 % Bryan O'Sullivan
-% http://mailrank.com/
+% mailrank.com
+
+# Steal these slides!
+
+[github.com/bos/strange-loop-2011](https://github.com/bos/strange-loop-2011)
+
 
 # In the beginning
 
@@ -487,3 +492,15 @@ For all languages, tools, or technologies *X*:
 * *then* please see me after the talk, as I have a lead on this nice {
   bridge | weight loss plan | investment from Nigeria } that you might
   be interested in!
+
+
+# Next steps
+
+We're continuing to write new code.
+
+Going to be hiring soon!
+
+Teaching "Functional Systems in Haskell" at Stanford, starting next
+week.
+
+Thanks!
