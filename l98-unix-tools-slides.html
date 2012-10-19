@@ -1,0 +1,865 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="http://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="https://d3eoax9i5htok0.cloudfront.net/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <!--
+  <script 
+    type="text/javascript"
+    src="http://localhost/mathjax/MathJax.js?config=default">
+  </script>
+  -->
+  <script src="http://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js.gz"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="section slide level1" id="learn-haskell-as-a-toolsmith">
+<h1>Learn Haskell as a Toolsmith</h1>
+<p>Bryan O’Sullivan</p>
+<p>Facebook</p>
+</div>
+<div class="section slide level1" id="before-we-begin">
+<h1>Before we begin…</h1>
+<p>I hope everyone has installed the Haskell Platform!</p>
+<ul>
+<li><a href="http://www.haskell.org/platform/">http://www.haskell.org/platform/</a></li>
+</ul>
+<p>If you have not, <em>please do now</em></p>
+<ul>
+<li>Expect it to take 5-10 minutes</li>
+</ul>
+</div>
+<div class="section slide level1" id="what-is-the-haskell-platform">
+<h1>What is the Haskell Platform?</h1>
+<p>A “batteries included” distribution</p>
+<ul>
+<li><p>Compiler, interpreter, other tools</p></li>
+<li><p>Core libraries for some common uses</p></li>
+<li><p>Documentation</p></li>
+</ul>
+<p>Often just called “the HP”</p>
+</div>
+<div class="section slide level1" id="the-main-tools-youll-use">
+<h1>The main tools you’ll use</h1>
+<p>The Platform ships with an optimising compiler</p>
+<ul>
+<li>GHC, the Glasgow Haskell Compiler</li>
+</ul>
+<p>Also an interactive REPL</p>
+<ul>
+<li>GHCi</li>
+</ul>
+</div>
+<div class="section slide level1" id="getting-started">
+<h1>Getting started</h1>
+<p>Open up a terminal window and start GHCi:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">ghci</code></pre>
+<p>It should print output like this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">GHCi</span>, version <span class="fl">7.6</span><span class="fu">.</span><span class="dv">1</span><span class="fu">:</span> http<span class="fu">://</span>www<span class="fu">.</span>haskell<span class="fu">.</span>org<span class="fu">/</span>ghc<span class="fu">/</span>  <span class="fu">:?</span> for help
+<span class="dt">Loading</span> package ghc<span class="fu">-</span>prim <span class="fu">...</span> linking <span class="fu">...</span> done<span class="fu">.</span>
+<span class="dt">Loading</span> package integer<span class="fu">-</span>gmp <span class="fu">...</span> linking <span class="fu">...</span> done<span class="fu">.</span>
+<span class="dt">Loading</span> package base <span class="fu">...</span> linking <span class="fu">...</span> done<span class="fu">.</span>
+<span class="dt">Prelude</span><span class="fu">&gt;</span></code></pre>
+<p>That last line is its prompt.</p>
+</div>
+<div class="section slide level1" id="a-familiar-start">
+<h1>A familiar start</h1>
+<p>Basic arithmetic looks familiar:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="dv">2+3</span>
+<span class="dv">5</span></code></pre>
+<p>If you’re pining for C, you can even write numbers in hexadecimal:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">31337</span> <span class="fu">*</span> <span class="dv">0xdeadbeef</span></code></pre>
+<p>Quick!</p>
+<ul>
+<li>What are the first and last digits of the result of the expression above?</li>
+</ul>
+</div>
+<div class="section slide level1" id="so-long-ghci">
+<h1>So long, ghci!</h1>
+<p>You can quit <code>ghci</code> as follows:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="fu">:</span>quit</code></pre>
+<p>Or abbreviate:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="fu">:</span>q</code></pre>
+<p>Or simply type control-D:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Prelude</span><span class="fu">&gt;</span> <span class="fu">^</span><span class="dt">D</span></code></pre>
+</div>
+<div class="section slide level1" id="writing-a-tiny-program">
+<h1>Writing a tiny program</h1>
+<p>Open your text editor, and save the following to a file named <code>HelloWorld.hs</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">main <span class="fu">=</span> <span class="fu">putStrLn</span> <span class="st">&quot;hello world</span></code></pre>
+<ul>
+<li><p><code>HelloWorld</code> - Haskell programmers use CamelCase naming</p></li>
+<li><p>File (module) names start with a capital letter</p></li>
+<li><p><code>.hs</code> is the source file suffix</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="run-it">
+<h1>Run it!</h1>
+<p>We can immediately run a program using the interpreter.</p>
+<p>Try this from your terminal window:</p>
+<pre><code>runghc HelloWorld</code></pre>
+<p>As with most languages, the interpreter:</p>
+<ul>
+<li><p>Starts up quickly</p></li>
+<li><p>Runs slowly</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="compile-it">
+<h1>Compile it!</h1>
+<p>We prefer to run standalone native executables.</p>
+<p>Here’s how to build ours:</p>
+<pre><code>ghc -O --make HelloWorld.hs</code></pre>
+<ul>
+<li><p><code>ghc</code> runs the compiler</p></li>
+<li><p><code>-O</code> means “enable optimisation”</p></li>
+<li><p><code>--make</code> means “figure out dependencies, and build a binary”</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="run-our-compiled-program">
+<h1>Run our compiled program!</h1>
+<p>After we run this…</p>
+<pre><code>ghc -O --make HelloWorld.hs</code></pre>
+<p>…There will be an executable named <code>HelloWorld</code> in the current directory.</p>
+<p>(<code>HelloWorld.exe</code> on Windows)</p>
+<p>Run it:</p>
+<pre><code>./HelloWorld</code></pre>
+</div>
+<div class="section slide level1" id="quick-pause">
+<h1>Quick pause</h1>
+<p>Has everyone been able to compile and run their <code>HelloWorld</code> executable?</p>
+</div>
+<div class="section slide level1" id="advertisement-emacs">
+<h1>Advertisement: Emacs</h1>
+<p>I prefer to develop my Haskell code using Emacs.</p>
+<p>Haskell support:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">git clone https<span class="fu">://</span>github<span class="fu">.</span>com<span class="fu">/</span>haskell<span class="fu">/</span>haskell<span class="fu">-</span>mode</code></pre>
+<p>Simple setup for your <code>.emacs</code>:</p>
+<pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span class="co">;; Tell Emacs how to find the package</span>
+(add-to-list &#39;load-path <span class="st">&quot;~/git/haskell-mode&quot;</span>)
+
+<span class="co">;; Load at startup</span>
+(<span class="kw">load</span> <span class="st">&quot;haskell-site-file&quot;</span> <span class="kw">nil</span> <span class="kw">t</span>)
+
+<span class="co">;; Make auto-indent do something halfway sane</span>
+(add-hook &#39;haskell-mode-hook &#39;turn-on-haskell-indent)</code></pre>
+</div>
+<div class="section slide level1" id="how-i-usually-work">
+<h1>How I usually work</h1>
+<p>Open a source file in Emacs.</p>
+<p>Hack, hack, hack.</p>
+<p>Wonder if it’s making sense.</p>
+<p>Type <code>C-c C-l</code> to load it into <code>ghci</code>.</p>
+<p>Interact with it, see if it made sense.</p>
+</div>
+<div class="section slide level1" id="strings-and-lists">
+<h1>Strings and lists</h1>
+<p>Back into <code>ghci</code>, please!</p>
+<p>Here’s a string:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span></code></pre>
+<p>And here’s a list:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+</div>
+<div class="section slide level1" id="appending-part-1">
+<h1>Appending, part 1</h1>
+<p>Please tell me what the result of this expression is:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">++</span> <span class="st">&quot;bar&quot;</span></code></pre>
+</div>
+<div class="section slide level1" id="appending-part-2">
+<h1>Appending, part 2</h1>
+<p>And now this expression:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>] <span class="fu">++</span> [<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>]</code></pre>
+</div>
+<div class="section slide level1" id="the-implication">
+<h1>The implication?</h1>
+<p>A string is just a kind of list.</p>
+<p>Try typing this into <code>ghci</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="ch">&#39;a&#39;</span>,<span class="ch">&#39;b&#39;</span>,<span class="ch">&#39;c&#39;</span>]</code></pre>
+<p>We have two kinds of quotes, like C:</p>
+<ul>
+<li><p>Single quotes: one character</p></li>
+<li><p>Double quotes: a string (list of zero or more characters)</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="simple-logical-operators">
+<h1>Simple logical operators</h1>
+<p>Try this in <code>ghci</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">==</span> [<span class="ch">&#39;f&#39;</span>,<span class="ch">&#39;o&#39;</span>,<span class="ch">&#39;o&#39;</span>]</code></pre>
+</div>
+<div class="section slide level1" id="simple-logical-operators-1">
+<h1>Simple logical operators</h1>
+<p>Try this in <code>ghci</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">==</span> [<span class="ch">&#39;f&#39;</span>,<span class="ch">&#39;o&#39;</span>,<span class="ch">&#39;o&#39;</span>]</code></pre>
+<p>It should evaluate to <code>True</code>.</p>
+<p>Now this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;foo&quot;</span> <span class="fu">&lt;</span> <span class="st">&quot;bar&quot;</span></code></pre>
+</div>
+<div class="section slide level1" id="we-just-learned-something-else">
+<h1>We just learned something else!</h1>
+<p>The Boolean values are named <code>True</code> and <code>False</code>.</p>
+<ul>
+<li>We call these <em>value constructors</em>, because they construct Boolean values.</li>
+</ul>
+<p>Oh, and case is important!</p>
+<ul>
+<li><p>Try typing <code>true</code> into <code>ghci</code> instead.</p></li>
+<li><p>What error message do you get?</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="using-functions">
+<h1>Using functions</h1>
+<p>More fun in <code>ghci</code>.</p>
+<p>What does this expression print?</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">last</span> <span class="st">&quot;bar&quot;</span></code></pre>
+</div>
+<div class="section slide level1" id="how-we-use-functions">
+<h1>How we use functions</h1>
+<p><em>Unlike</em> C-family languages:</p>
+<ul>
+<li>We separate a function from its arguments using whitespace.</li>
+</ul>
+<p>This is the first of <em>many</em> cases where:</p>
+<ul>
+<li>“Stuff that works in C”</li>
+</ul>
+<p>does not translate into</p>
+<ul>
+<li>“Stuff that I should expect to work in Haskell”</li>
+</ul>
+</div>
+<div class="section slide level1" id="for-example">
+<h1>For example…</h1>
+<p>We’ve seen the equality operator:</p>
+<ul>
+<li>The familiar <code>==</code></li>
+</ul>
+<p>What about inequality?</p>
+<ul>
+<li>It’s <code>/=</code>, sort of like \(\neq\) in mathematics</li>
+</ul>
+</div>
+<div class="section slide level1" id="more-complex-expressions">
+<h1>More complex expressions</h1>
+<p>Suppose we need to supply a function with a non-trivial argument</p>
+<p>For example:</p>
+<ul>
+<li>The <code>reverse</code> function</li>
+</ul>
+<p>Its argument:</p>
+<ul>
+<li><code>&quot;foo&quot; ++ &quot;bar&quot;</code></li>
+</ul>
+<p>Try entering the two above into <code>ghci</code> <em>without</em> any parentheses.</p>
+<p>What do you see?</p>
+<p>Next, figure out where the parentheses should go to get a result of <code>&quot;raboof&quot;</code>.</p>
+</div>
+<div class="section slide level1" id="counting-characters">
+<h1>Counting characters</h1>
+<p>Our first actual interactive program!</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">countChars xs <span class="fu">=</span> <span class="fu">show</span> (<span class="fu">length</span> xs)
+
+main <span class="fu">=</span> <span class="fu">interact</span> countChars</code></pre>
+</div>
+<div class="section slide level1" id="two-definitions">
+<h1>Two definitions?</h1>
+<p>This is our first function definition:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">countChars xs <span class="fu">=</span> <span class="fu">show</span> (<span class="fu">length</span> xs)</code></pre>
+<p>On the left:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">countChars xs <span class="fu">=</span> <span class="co">{- ... -}</span></code></pre>
+<ul>
+<li><p>A function name: <code>countChars</code></p></li>
+<li><p>The name of an argument: <code>xs</code></p></li>
+</ul>
+<p>A function and its argument(s) are separated by spaces.</p>
+</div>
+<div class="section slide level1" id="two-definitions-1">
+<h1>Two definitions!</h1>
+<p>This is our first function definition:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">countChars xs <span class="fu">=</span> <span class="fu">show</span> (<span class="fu">length</span> xs) <span class="fu">++</span> <span class="st">&quot;\n&quot;</span></code></pre>
+<p>On the right:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">{- ... -}</span> <span class="fu">=</span> <span class="fu">show</span> (<span class="fu">length</span> xs)</code></pre>
+<ul>
+<li><p><code>length</code> computes the length of a list</p></li>
+<li><p><code>show</code> renders a Haskell value as a string</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="second-definition">
+<h1>Second definition</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">main <span class="fu">=</span> <span class="fu">interact</span> countChars</code></pre>
+<p>The <code>interact</code> function:</p>
+<ul>
+<li><p>Reads input from stdin as a string</p></li>
+<li><p>Hands it to the function (for us, <code>countChars</code>)</p></li>
+<li><p>Writes the result to stdout</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="our-first-unix-utility">
+<h1>Our first Unix utility!</h1>
+<p>Save this to <code>WC.hs</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">countChars xs <span class="fu">=</span> <span class="fu">show</span> (<span class="fu">length</span> xs) <span class="fu">++</span> <span class="st">&quot;\n&quot;</span>
+
+main <span class="fu">=</span> <span class="fu">interact</span> countChars</code></pre>
+<p>Compile:</p>
+<pre><code>ghc -O --make WC</code></pre>
+<p>Run from your shell prompt:</p>
+<pre><code>./WC &lt; WC.hs</code></pre>
+<p>What number does this print for you?</p>
+</div>
+<div class="section slide level1" id="what-can-lists-actually-contain">
+<h1>What can lists actually contain?</h1>
+<p>Try this in <code>ghci</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="kw">True</span>, <span class="kw">False</span>] <span class="fu">++</span> [<span class="ch">&#39;a&#39;</span>, <span class="ch">&#39;b&#39;</span>]</code></pre>
+<p>What do you get?</p>
+</div>
+<div class="section slide level1" id="what-can-lists-actually-contain-1">
+<h1>What can lists actually contain?</h1>
+<p>Try this in <code>ghci</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="kw">True</span>, <span class="kw">False</span>] <span class="fu">++</span> [<span class="ch">&#39;a&#39;</span>, <span class="ch">&#39;b&#39;</span>]</code></pre>
+<p>What do you get?</p>
+</div>
+<div class="section slide level1" id="what-can-lists-actually-contain-2">
+<h1>What can lists actually contain?</h1>
+<p>Try this in <code>ghci</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="kw">True</span>, <span class="kw">False</span>] <span class="fu">++</span> [<span class="ch">&#39;a&#39;</span>, <span class="ch">&#39;b&#39;</span>]</code></pre>
+<p>What do you get?</p>
+<ul>
+<li>A <em>type error</em>!</li>
+</ul>
+</div>
+<div class="section slide level1" id="why-a-type-error">
+<h1>Why a type error?</h1>
+<p>We know we can have lists that contain several different kinds of data:</p>
+<ul>
+<li><p>Numbers</p></li>
+<li><p>Characters</p></li>
+<li><p>Booleans</p></li>
+</ul>
+<p>Why not a <em>mix</em>?</p>
+</div>
+<div class="section slide level1" id="step-one-type-signatures">
+<h1>Step one: type signatures</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">a ::</span> <span class="dt">Char</span>
+
+a <span class="fu">=</span> <span class="ch">&#39;x&#39;</span></code></pre>
+<p>The <code>::</code> notation introduces a <em>type signature</em>.</p>
+<p>A type signature means:</p>
+<ul>
+<li><p>The <em>name</em> on the left of <code>::</code>…</p></li>
+<li><p>…<em>has the type</em>…</p></li>
+<li><p>…the <em>type</em> on the right</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="type-constructors">
+<h1>Type constructors</h1>
+<p>The name <code>Char</code> is a <em>type constructor</em>.</p>
+<ul>
+<li>It constructs a type.</li>
+</ul>
+<p>We only find type names on the RHS of type signatures.</p>
+</div>
+<div class="section slide level1" id="constructors-constructors">
+<h1>Constructors, constructors</h1>
+<p>Now something should be should be clear:</p>
+<ul>
+<li>Why we called a name like <code>True</code> a <em>value constructor</em></li>
+</ul>
+<p>We can construct both</p>
+<ul>
+<li><p><em>values</em> (usually) and</p></li>
+<li><p><em>types</em> (on the RHS of a type signature)</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="understanding-constructors">
+<h1>Understanding constructors</h1>
+<p>Here’s a reasonable question:</p>
+<ul>
+<li>“How do I know whether I am looking at a type constructor or a value constructor?”</li>
+</ul>
+<p>The answer is easy:</p>
+<ul>
+<li><p>If it starts with a capital letter, it’s a constructor</p></li>
+<li><p>If lowercase, it’s a variable</p></li>
+<li><p>If it’s somewhere on the right of <code>::</code>, it’s a <em>type</em> constructor</p></li>
+<li><p>Otherwise, it’s a <em>value</em> constructor</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="for-example-1">
+<h1>For example…</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- value constructor    ::    type constructor</span>
+
+<span class="kw">True</span><span class="ot">                    ::</span>    <span class="dt">Bool</span>
+
+<span class="co">-- (Oh yes, &quot;--&quot; introduces a comment.)</span>
+
+<span class="co">-- (A comments runs until end of line.)</span></code></pre>
+</div>
+<div class="section slide level1" id="lists">
+<h1>Lists</h1>
+<p>We write a list of characters as follows:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">xs ::</span> [<span class="dt">Char</span>]
+
+xs <span class="fu">=</span> <span class="st">&quot;foo&quot;</span></code></pre>
+<p>The square brackets around a type name mean “list of <em>that type</em>”.</p>
+</div>
+<div class="section slide level1" id="other-type-names">
+<h1>Other type names</h1>
+<p>Most common built in types:</p>
+<ul>
+<li><p><code>Bool</code>: Boolean (values: <code>True</code> or <code>False</code>)</p></li>
+<li><p><code>Char</code>: Unicode character</p></li>
+<li><p><code>Double</code>: double precision floating point</p></li>
+<li><p><code>Int</code>: 32- or 64-bit integer (signed)</p></li>
+<li><p><code>Integer</code>: arbitrary precision integer (signed)</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="static-typing">
+<h1>Static typing</h1>
+<p>When we write a Haskell expression or program:</p>
+<ul>
+<li><em>Every component</em> has a type that is known <em>before</em> the program runs.</li>
+</ul>
+<p>So Haskell’s type system is <em>static</em>:</p>
+<ul>
+<li>We know everything important about types before a program ever executes.</li>
+</ul>
+</div>
+<div class="section slide level1" id="and-yet">
+<h1>And yet…</h1>
+<p>For the first \(n\) minutes of this tutorial, we wrote <em>no</em> type signatures.</p>
+<p>And our snippets and programs <em>still worked</em>.</p>
+<ul>
+<li>Why?</li>
+</ul>
+<p>The compiler can <em>infer</em> the right types for us</p>
+</div>
+<div class="section slide level1" id="example">
+<h1>Example</h1>
+<p>Consider:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- a :: Bool</span>
+
+a <span class="fu">=</span> <span class="kw">True</span>
+
+b <span class="fu">=</span> <span class="fu">not</span> a</code></pre>
+<p>The name <code>a</code> must have the type <code>Bool</code></p>
+<ul>
+<li>Because the value constructor <code>True</code> constructs a value of type <code>Bool</code></li>
+</ul>
+<p>The function <code>not</code> accepts a <code>Bool</code> and returns a <code>Bool</code></p>
+<ul>
+<li>So <code>b</code> must have the type <code>Bool</code> too!</li>
+</ul>
+</div>
+<div class="section slide level1" id="wait-what">
+<h1>Wait, what?</h1>
+<p>We said:</p>
+<ul>
+<li>“The function <code>not</code> accepts a <code>Bool</code> and returns a <code>Bool</code>”</li>
+</ul>
+<p>But we haven’t talked about writing types for functions!</p>
+<p>Here is the type signature for <code>not</code>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">--     param  -&gt;  result</span>
+<span class="fu">not</span><span class="ot"> ::</span> <span class="dt">Bool</span>   <span class="ot">-&gt;</span>  <span class="dt">Bool</span></code></pre>
+</div>
+<div class="section slide level1" id="lists-once-again">
+<h1>Lists once again</h1>
+<p>Now that we know how to read a type signature:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">a ::</span> [<span class="dt">Char</span>]
+
+a <span class="fu">=</span> [<span class="ch">&#39;x&#39;</span>, <span class="ch">&#39;y&#39;</span>]</code></pre>
+<p>It should be clear why <code>a</code> cannot contain values that are not <code>Char</code>:</p>
+<ul>
+<li>Because our type signature says it can’t!</li>
+</ul>
+</div>
+<div class="section slide level1" id="but">
+<h1>But …</h1>
+<p>We know we can have lists like <code>[Bool]</code>, <code>[Int]</code>, and so on …</p>
+<ul>
+<li>How do we generalize this idea?</li>
+</ul>
+<p>Just as we do with a function</p>
+</div>
+<div class="section slide level1" id="parameters-for-functions">
+<h1>Parameters for functions</h1>
+<p>Not sure what values a function should accept?</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">square x <span class="fu">=</span> x <span class="fu">*</span> x</code></pre>
+<p>The variable <code>x</code> is a parameter that lets us supply different values.</p>
+<p>Really obvious.</p>
+</div>
+<div class="section slide level1" id="parameters-for-types">
+<h1>Parameters for types</h1>
+<p>Don’t know what type of value a list should store?</p>
+<p>Instead of a specific type, we supply a <em>type parameter</em>.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">length</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span></code></pre>
+<p>This signature says:</p>
+<ul>
+<li><code>length</code> will work for lists whose elements can be of any type</li>
+</ul>
+</div>
+<div class="section slide level1" id="replacement">
+<h1>Replacement</h1>
+<p>Suppose we want to get the length of a string.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">length</span> <span class="st">&quot;foo&quot;</span></code></pre>
+<p>The value <code>&quot;foo&quot;</code> has the type <code>[Char]</code>.</p>
+<p>To figure out the type of <code>length &quot;foo&quot;</code>:</p>
+<ul>
+<li>Simply replace <code>length</code>’s type parameter <code>a</code> with the type <code>Char</code></li>
+</ul>
+</div>
+<div class="section slide level1" id="inspecting-a-list">
+<h1>Inspecting a list</h1>
+<p>How to get the first element of a list:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">head</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> a</code></pre>
+<p>This signature says:</p>
+<ul>
+<li><p>Accept a list of some unknown type</p></li>
+<li><p>Return a value of <em>the same type</em> as inside the list</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="rendering-things-can-we-do-it">
+<h1>Rendering things: can we do it?</h1>
+<p>Our knowledge of types so far:</p>
+<ul>
+<li><p>Concrete types: <code>Char</code>, <code>[Bool]</code></p></li>
+<li><p>Parameterised types: <code>a</code> and <code>[a]</code></p></li>
+</ul>
+<p>But we don’t know how to print values yet!</p>
+</div>
+<div class="section slide level1" id="typeclasses">
+<h1>Typeclasses</h1>
+<p>This declaration introduces a set of types:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="kw">Show</span> a <span class="kw">where</span>
+<span class="ot">    show ::</span> a <span class="ot">-&gt;</span> <span class="dt">String</span></code></pre>
+<p>We are saying:</p>
+<ul>
+<li><p>There exists a set of types named <code>Show</code>.</p></li>
+<li><p>Let’s give a type from this set the name <code>a</code>.</p></li>
+<li><p>The type <code>a</code> defines a function named <code>show</code>.</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="instances">
+<h1>Instances</h1>
+<p>How is the <code>show</code> function defined for e.g. <code>Bool</code>?</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">instance</span> <span class="kw">Show</span> <span class="dt">Bool</span> <span class="kw">where</span>
+  <span class="fu">show</span> <span class="kw">True</span>  <span class="fu">=</span> <span class="st">&quot;True&quot;</span>
+  <span class="fu">show</span> <span class="kw">False</span> <span class="fu">=</span> <span class="st">&quot;False&quot;</span></code></pre>
+</div>
+<div class="section slide level1" id="but-why">
+<h1>But why?</h1>
+<p>The parametric type of <code>length</code> lets us compute the length of any list without caring what type is contained inside.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">length</span><span class="ot"> ::</span> [a] <span class="ot">-&gt;</span> <span class="dt">Int</span></code></pre>
+<p>The parametric type of <code>show</code> lets us render a value of any type without knowing the precise type.</p>
+<ul>
+<li>(Provided the compiler can tell the type is an instance of <code>Show</code>.)</li>
+</ul>
+</div>
+<div class="section slide level1" id="a-silly-example">
+<h1>A silly example</h1>
+<p>Look at this contrived function.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">wat xs <span class="fu">=</span> <span class="st">&quot;my &quot;</span> <span class="fu">++</span> <span class="fu">show</span> xs <span class="fu">++</span>
+         <span class="st">&quot; is &quot;</span> <span class="fu">++</span> <span class="fu">show</span> (<span class="fu">length</span> xs) <span class="fu">++</span>
+         <span class="st">&quot; elements long&quot;</span></code></pre>
+<p>Two things:</p>
+<ul>
+<li><p>It needs to render the length of <code>xs</code></p></li>
+<li><p>It also needs to render <code>xs</code></p></li>
+</ul>
+</div>
+<div class="section slide level1" id="a-silly-example-1">
+<h1>A silly example</h1>
+<p>Look at this contrived function.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">wat xs <span class="fu">=</span> <span class="st">&quot;my &quot;</span> <span class="fu">++</span> <span class="fu">show</span> xs <span class="fu">++</span>
+         <span class="st">&quot; is &quot;</span> <span class="fu">++</span> <span class="fu">show</span> (<span class="fu">length</span> xs) <span class="fu">++</span>
+         <span class="st">&quot; elements long&quot;</span></code></pre>
+<p>Two things:</p>
+<ul>
+<li><p>We don’t need to know the type of <code>xs</code></p></li>
+<li><p>We <em>do</em> need to be sure it’s in the <code>Show</code> class</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="typeclass-constraints">
+<h1>Typeclass constraints</h1>
+<p>Introducing the <em>constraint</em>:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">wat ::</span> <span class="kw">Show</span> a <span class="ot">=&gt;</span> [a] <span class="ot">-&gt;</span> [<span class="dt">Char</span>]</code></pre>
+<p>The <code>Show a =&gt;</code> notation means:</p>
+<ul>
+<li><p>I don’t know what type <code>a</code> is</p></li>
+<li><p>I need it to be an instance of <code>Show</code></p></li>
+</ul>
+</div>
+<div class="section slide level1" id="and-one-more-thing">
+<h1>And one more thing!</h1>
+<p>This is our first multiline function:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">wat xs <span class="fu">=</span> <span class="st">&quot;my &quot;</span> <span class="fu">++</span> <span class="fu">show</span> xs <span class="fu">++</span>
+         <span class="st">&quot; is &quot;</span> <span class="fu">++</span> <span class="fu">show</span> (<span class="fu">length</span> xs) <span class="fu">++</span>
+         <span class="st">&quot; elements long&quot;</span></code></pre>
+<p>Yes, Haskell is sensitive to white space!</p>
+<p>After a declaration begins:</p>
+<ul>
+<li>Every line that is more indented than the first <em>continues</em> the current declaration</li>
+</ul>
+</div>
+<div class="section slide level1" id="counting-words">
+<h1>Counting words</h1>
+<p>Here’s our original word count program:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">countChars xs <span class="fu">=</span> <span class="fu">show</span> (<span class="fu">length</span> xs)
+
+main <span class="fu">=</span> <span class="fu">interact</span> countChars</code></pre>
+<p>Modify it to count words instead.</p>
+<p>Use the <code>words</code> function. To find out about it:</p>
+<ul>
+<li>Use the <code>:type</code> directive in <code>ghci</code></li>
+</ul>
+<pre><code>:type words</code></pre>
+</div>
+<div class="section slide level1" id="counting-lines">
+<h1>Counting lines</h1>
+<p>If you wanted, you could easily modify your program to count lines.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">lines</span><span class="ot"> ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> [<span class="dt">String</span>]</code></pre>
+</div>
+<div class="section slide level1" id="sugar">
+<h1>Sugar</h1>
+<p>We know two different syntaxes for lists.</p>
+<p>Brackets:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="kw">True</span>, <span class="kw">False</span>]</code></pre>
+<p>Strings:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="st">&quot;wibble&quot;</span></code></pre>
+<p>These are both syntactic sugar for a simpler form.</p>
+</div>
+<div class="section slide level1" id="constructing-lists">
+<h1>Constructing lists</h1>
+<p>We always write the empty list as simply</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[]<span class="ot"> ::</span> [a]</code></pre>
+<p>This is one of the list type’s two constructors.</p>
+<p>The other is an operator named “<code>:</code>”.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(:) ::</span> a <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [a]</code></pre>
+</div>
+<div class="section slide level1" id="whats-in-a-signature-i">
+<h1>What’s in a signature? I</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(:) ::</span> a <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [a]</code></pre>
+<p>This is the first type signature we have seen for a function of more than one argument.</p>
+<ul>
+<li><p>The last item in the chain of <code>-&gt;</code> is the return type.</p></li>
+<li><p>The rest are parameter types.</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="whats-in-a-signature-ii">
+<h1>What’s in a signature? II</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">(:) ::</span> a <span class="ot">-&gt;</span> [a] <span class="ot">-&gt;</span> [a]</code></pre>
+<p>This is also the first type signature we have seen for an <em>operator</em>.</p>
+<ul>
+<li>We simply wrap the operator name in parentheses to write a signature.</li>
+</ul>
+<p>Another example:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">class</span> <span class="kw">Eq</span> a <span class="kw">where</span>
+<span class="ot">    (==) ::</span> a <span class="ot">-&gt;</span> a <span class="ot">-&gt;</span> <span class="dt">Bool</span></code></pre>
+</div>
+<div class="section slide level1" id="sugar-1">
+<h1>Sugar</h1>
+<p>You write:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="dv">3</span>]</code></pre>
+<p>It means:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">3</span> <span class="fu">:</span> []</code></pre>
+</div>
+<div class="section slide level1" id="sugar-2">
+<h1>Sugar</h1>
+<p>You write:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+<p>It means:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">2</span> <span class="fu">:</span> (<span class="dv">3</span> <span class="fu">:</span> [])</code></pre>
+</div>
+<div class="section slide level1" id="sugar-3">
+<h1>Sugar</h1>
+<p>You write:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>]</code></pre>
+<p>It means:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">:</span> (<span class="dv">2</span> <span class="fu">:</span> (<span class="dv">3</span> <span class="fu">:</span> []))</code></pre>
+</div>
+<div class="section slide level1" id="fixity">
+<h1>Fixity</h1>
+<p>Infix operators have notions of <em>fixity</em> and <em>precedence</em></p>
+<ul>
+<li>Where the magic parentheses get put when the real ones are missing</li>
+</ul>
+<p>We’re already familiar with this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">2</span> <span class="fu">+</span> <span class="dv">3</span> <span class="fu">*</span> <span class="dv">5</span> <span class="fu">+</span> <span class="dv">6</span></code></pre>
+<p>With explicit parens:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">(<span class="dv">2</span> <span class="fu">+</span> (<span class="dv">3</span> <span class="fu">*</span> <span class="dv">5</span>)) <span class="fu">+</span> <span class="dv">6</span></code></pre>
+</div>
+<div class="section slide level1" id="fixity-and">
+<h1>Fixity and (:)</h1>
+<p>Lucky for us, <code>(:)</code> associates to the right.</p>
+<p>So we can simplify this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">:</span> (<span class="dv">2</span> <span class="fu">:</span> (<span class="dv">3</span> <span class="fu">:</span> []))</code></pre>
+<p>To this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">:</span> <span class="dv">2</span> <span class="fu">:</span> <span class="dv">3</span> <span class="fu">:</span> []</code></pre>
+</div>
+<div class="section slide level1" id="where-do-values-come-from">
+<h1>Where do values come from?</h1>
+<p>Suppose we construct a value like this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">:</span> []</code></pre>
+<p>The Haskell runtime has to manage this data for us.</p>
+<p>It must remember that:</p>
+<ul>
+<li><p>We constructed an empty list</p></li>
+<li><p>We called the <code>(:)</code> constructor with 1 as its first parameter, and the empty list as its second</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="what-about-us">
+<h1>What about us?</h1>
+<p>If the Haskell runtime has to manage this data for us, wouldn’t it be useful if we could inspect it?</p>
+<p>We can—using <em>pattern matching</em>.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">head</span> (x<span class="fu">:</span>xs) <span class="fu">=</span> x</code></pre>
+</div>
+<div class="section slide level1" id="pattern-matching-i">
+<h1>Pattern matching I</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">head</span> (x<span class="fu">:</span>xs) <span class="fu">=</span> x</code></pre>
+<p>The <code>(x:xs)</code> notation means:</p>
+<ul>
+<li><p>See if the value we are looking at was constructed using the <code>(:)</code> constructor.</p></li>
+<li><p>If it was, assign <code>x</code> to <code>(:)</code>’s first parameter, and <code>xs</code> to its second.</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="pattern-matching-ii">
+<h1>Pattern matching II</h1>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">myLength []     <span class="fu">=</span> <span class="dv">0</span>
+myLength (x<span class="fu">:</span>xs) <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> myLength xs</code></pre>
+<p>Since a list has two constructors, it follows that:</p>
+<ul>
+<li>A function definition may need multiple clauses to match them all.</li>
+</ul>
+</div>
+<div class="section slide level1" id="how-does-pattern-matching-work">
+<h1>How does pattern matching work?</h1>
+<p>Suppose we want to evaluate <code>myLength [1,2]</code>.</p>
+<p>Pattern matching goes top to bottom.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">myLength []     <span class="fu">=</span> <span class="dv">0</span></code></pre>
+<p>Our value here is <code>1:(2:[])</code>.</p>
+<p>The first constructor is <code>(:)</code>, not <code>[]</code>, so this pattern does not match.</p>
+</div>
+<div class="section slide level1" id="how-does-pattern-matching-work-1">
+<h1>How does pattern matching work?</h1>
+<p>Suppose we want to evaluate <code>myLength [1,2]</code>.</p>
+<p>Our second pattern:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">myLength (x<span class="fu">:</span>xs) <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> myLength xs</code></pre>
+<p>Our value is still <code>1:(2:[])</code>.</p>
+<p>This pattern matches.</p>
+<p>We bind <code>x</code> to <code>1</code>, <code>xs</code> to <code>2:[]</code>, and evaluate the RHS:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">+</span> myLength (<span class="dv">2</span><span class="fu">:</span>[])</code></pre>
+</div>
+<div class="section slide level1" id="next-step">
+<h1>Next step</h1>
+<p>Now we evaluate <code>myLength (2:[])</code>.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">myLength []     <span class="fu">=</span> <span class="dv">0</span></code></pre>
+<p>Still no match.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">myLength (x<span class="fu">:</span>xs) <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> myLength xs</code></pre>
+<p>Another match!</p>
+<p>We bind <code>x</code> to <code>2</code>, <code>xs</code> to <code>[]</code>, and evaluate the RHS:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">+</span> myLength []</code></pre>
+</div>
+<div class="section slide level1" id="where-do-we-stand">
+<h1>Where do we stand?</h1>
+<p>Two steps into evaluation, we now have this:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">+</span> (<span class="dv">1</span> <span class="fu">+</span> myLength [])</code></pre>
+<p>On the last application of <code>myLength</code>, we get:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">+</span> (<span class="dv">1</span> <span class="fu">+</span> <span class="dv">0</span>)</code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">1</span> <span class="fu">+</span> <span class="dv">1</span></code></pre>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dv">2</span></code></pre>
+</div>
+<div class="section slide level1" id="all-right">
+<h1>All right!</h1>
+<p>Here’s that <code>myLength</code> function:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">myLength []     <span class="fu">=</span> <span class="dv">0</span>
+myLength (x<span class="fu">:</span>xs) <span class="fu">=</span> <span class="dv">1</span> <span class="fu">+</span> myLength xs</code></pre>
+<p>Modify it to compute the <code>sum</code> of a list of numbers.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">mySum ::</span> [<span class="dt">Int</span>] <span class="ot">-&gt;</span> <span class="dt">Int</span></code></pre>
+</div>
+<div class="section slide level1" id="conditional-execution">
+<h1>Conditional execution</h1>
+<p>This syntax is called a guard:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">isEven x
+  <span class="fu">|</span> x <span class="ot">`div`</span> <span class="dv">2</span> <span class="fu">==</span> <span class="dv">0</span> <span class="fu">=</span> <span class="kw">True</span>
+  <span class="fu">|</span> <span class="fu">otherwise</span>      <span class="fu">=</span> <span class="kw">False</span></code></pre>
+<p>Guards are evaluated top to bottom, if a pattern match succeeds.</p>
+<p>The first guard to succeed has its RHS used as the result.</p>
+</div>
+<div class="section slide level1" id="uniq">
+<h1>uniq</h1>
+<p>The Unix <code>uniq</code> command gets drops consecutive repeated lines of input.</p>
+<pre><code>a
+a
+a
+x
+x
+c</code></pre>
+<pre><code>a
+x
+c</code></pre>
+<p>Write a program that has the same behaviour.</p>
+</div>
+<div class="section slide level1" id="uniq-1">
+<h1>uniq</h1>
+<p>The Unix <code>uniq</code> command gets drops consecutive repeated lines of input.</p>
+<p>Write a program that has the same behaviour.</p>
+<p>Useful functions:</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">lines</span><span class="ot"> ::</span> <span class="dt">String</span> <span class="ot">-&gt;</span> [<span class="dt">String</span>]
+
+<span class="fu">unlines</span><span class="ot"> ::</span> [<span class="dt">String</span>] <span class="ot">-&gt;</span> <span class="dt">String</span></code></pre>
+</div>
+<div class="section slide level1" id="how-i-started">
+<h1>How I started</h1>
+<p>I knew I could use <code>lines</code> and <code>unlines</code> to convert into the form that <code>interact</code> requires.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">main <span class="fu">=</span> <span class="fu">interact</span> uniq
+
+uniq xs <span class="fu">=</span> <span class="fu">unlines</span> (start (<span class="fu">lines</span> xs))</code></pre>
+</div>
+<div class="section slide level1" id="a-getting-started-function">
+<h1>A “getting started function”</h1>
+<p>If there is no input, we do nothing.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">start [] <span class="fu">=</span> []
+
+start (x<span class="fu">:</span>xs) <span class="fu">=</span> go x xs</code></pre>
+<p>Otherwise, get the first line of input, and call <code>go</code> on it.</p>
+</div>
+<div class="section slide level1" id="the-common-case">
+<h1>The common case</h1>
+<p>Go has a parameter, let’s call it “the current line”:</p>
+<ul>
+<li>The last non-repeated line we saw.</li>
+</ul>
+<p>If we reach the end of input, yield the current line.</p>
+<pre class="sourceCode haskell"><code class="sourceCode haskell">go x _ <span class="fu">=</span> [x]
+
+go x (y<span class="fu">:</span>ys)
+   <span class="fu">|</span> x <span class="fu">==</span> y    <span class="fu">=</span> go x ys
+   <span class="fu">|</span> <span class="fu">otherwise</span> <span class="fu">=</span> x <span class="fu">:</span> go y ys</code></pre>
+<p>If a new line is the same as the current line, do nothing.</p>
+<p>If it differs, return the old current line and pass a new current line to <code>go</code>.</p>
+</div>
+</body>
+</html>
